@@ -1,0 +1,10 @@
+{
+	"require": {
+		"silex/silex": "~2.0",
+		"doctrine/dbal": "~2.5",
+		"twig/twig": "~1.28"
+	},
+	"require-dev": {
+		"robmorgan/phinx": "^0.6.5"
+	}
+}
