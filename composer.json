@@ -1,10 +1,15 @@
 {
 	"require": {
 		"silex/silex": "~2.0",
-		"doctrine/dbal": "~2.5",
-		"twig/twig": "~1.28"
+		"doctrine/orm": "2.4.*",
+		"twig/twig": "~1.28",
+		"zendframework/zend-db": "^2.8",
+		"doctrine/dbal": "~2.2"
 	},
 	"require-dev": {
 		"robmorgan/phinx": "^0.6.5"
+	},
+	"autoload": {
+		"psr-4": {"TimeProject\\": "src"}
 	}
 }
