@@ -1,0 +1,4 @@
+services:
+#    time_project.example:
+#        class: TimeProjectBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

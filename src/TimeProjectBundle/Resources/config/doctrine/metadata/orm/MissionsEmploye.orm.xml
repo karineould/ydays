@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="MissionsEmploye" table="missions_employe">
+    <indexes>
+      <index name="idEmploye_idx" columns="idEmploye"/>
+      <index name="idMission_idx" columns="idMission"/>
+    </indexes>
+    <id name="idmissionsEmploye" type="integer" column="idMissions_employe">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <many-to-one field="idmission" target-entity="Missions" fetch="LAZY">
+      <join-columns>
+        <join-column name="idMission" referenced-column-name="idMissions"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idemploye" target-entity="Employe" fetch="LAZY">
+      <join-columns>
+        <join-column name="idEmploye" referenced-column-name="idEmploye"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

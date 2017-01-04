@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Missions" table="missions">
+    <indexes>
+      <index name="idSociete_idx" columns="idSociete"/>
+    </indexes>
+    <id name="idmissions" type="integer" column="idMissions">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="intitule" type="string" column="intitule" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="dateDebut" type="datetime" column="date_debut" nullable="true"/>
+    <field name="dateFin" type="datetime" column="date_fin" nullable="true"/>
+    <field name="totalEmploye" type="integer" column="total_employe" nullable="true">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <many-to-one field="idsociete" target-entity="Societe" fetch="LAZY">
+      <join-columns>
+        <join-column name="idSociete" referenced-column-name="idSociete"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>
