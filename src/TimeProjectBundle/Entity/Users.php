@@ -5,12 +5,12 @@ namespace TimeProjectBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * User
+ * Users
  *
- * @ORM\Table(name="user")
+ * @ORM\Table(name="users")
  * @ORM\Entity
  */
-class User
+class Users
 {
     /**
      * @var integer
@@ -73,7 +73,7 @@ class User
      *
      * @param string $nom
      *
-     * @return User
+     * @return Users
      */
     public function setNom($nom)
     {
@@ -97,7 +97,7 @@ class User
      *
      * @param string $prenom
      *
-     * @return User
+     * @return Users
      */
     public function setPrenom($prenom)
     {
@@ -121,7 +121,7 @@ class User
      *
      * @param string $email
      *
-     * @return User
+     * @return Users
      */
     public function setEmail($email)
     {
@@ -145,7 +145,7 @@ class User
      *
      * @param string $password
      *
-     * @return User
+     * @return Users
      */
     public function setPassword($password)
     {
@@ -169,7 +169,7 @@ class User
      *
      * @param integer $isdeleted
      *
-     * @return User
+     * @return Users
      */
     public function setIsdeleted($isdeleted)
     {

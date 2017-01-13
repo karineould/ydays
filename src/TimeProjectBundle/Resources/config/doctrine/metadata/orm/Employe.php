@@ -1,6 +1,6 @@
 <?php
 
-namespace TimeProjectBundle\Entity;
+
 
 use Doctrine\ORM\Mapping as ORM;
 

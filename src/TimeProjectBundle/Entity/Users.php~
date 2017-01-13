@@ -5,12 +5,12 @@ namespace TimeProjectBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * User
+ * Users
  *
- * @ORM\Table(name="user")
+ * @ORM\Table(name="users")
  * @ORM\Entity
  */
-class User
+class Users
 {
     /**
      * @var integer

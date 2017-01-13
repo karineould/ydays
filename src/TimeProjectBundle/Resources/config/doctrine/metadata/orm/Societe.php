@@ -1,0 +1,67 @@
+<?php
+
+
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Societe
+ *
+ * @ORM\Table(name="societe", indexes={@ORM\Index(name="idSecteur_idx", columns={"idSecteur_societe"}), @ORM\Index(name="idAdmin_idx", columns={"idAdmin"})})
+ * @ORM\Entity
+ */
+class Societe
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="idSociete", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idsociete;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom", type="string", length=45, nullable=true)
+     */
+    private $nom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="adresse", type="string", length=45, nullable=true)
+     */
+    private $adresse;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Societecol", type="string", length=45, nullable=true)
+     */
+    private $societecol;
+
+    /**
+     * @var \Admin
+     *
+     * @ORM\ManyToOne(targetEntity="Admin")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idAdmin", referencedColumnName="idAdmin")
+     * })
+     */
+    private $idadmin;
+
+    /**
+     * @var \SecteurSociete
+     *
+     * @ORM\ManyToOne(targetEntity="SecteurSociete")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idSecteur_societe", referencedColumnName="idSecteur_societe")
+     * })
+     */
+    private $idsecteurSociete;
+
+
+}
+

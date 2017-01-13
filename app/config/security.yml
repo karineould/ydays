@@ -6,6 +6,12 @@ security:
     providers:
         in_memory:
             memory: ~
+#        main:
+#            entity:
+#                class:    OCUserBundle\Entity\User
+#                property: username
+        main:
+            id: fos_user.user_provider.username
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -13,8 +19,24 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        # On crée un pare-feu uniquement pour le formulaire
+        main_login:
+            # Cette expression régulière permet de prendre /login (mais pas /login_check !)
+            pattern:   ^/login$
+            anonymous: true # On autorise alors les anonymes sur ce pare-feu
+
         main:
-            anonymous: ~
+            pattern:   ^/
+            anonymous: false
+            provider:  main
+            form_login:
+                login_path: login
+                check_path: login_check
+            logout:
+                path:   logout
+                target: /login
+#            remember_me:
+#                key:        %secret% # %secret% est un paramètre de parameters.yml
             # activate different ways to authenticate
 
             # http_basic: ~
@@ -22,3 +44,11 @@ security:
 
             # form_login: ~
             # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+    encoders:
+        OCUserBundle\Entity\User: sha512
+
+    access_control:
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/myaccount, roles: ROLE_USER }
