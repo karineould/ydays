@@ -10,4 +10,9 @@ class DefaultController extends Controller
     {
         return $this->render('TimeProjectBundle:Default:index.html.twig');
     }
+
+    public function loginAction()
+    {
+        return $this->render('TimeProjectBundle:Default:login.html.twig');
+    }
 }

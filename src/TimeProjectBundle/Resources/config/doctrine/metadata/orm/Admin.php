@@ -1,25 +1,25 @@
 <?php
 
-namespace TimeProjectBundle\Entity;
+
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Employe
+ * Admin
  *
- * @ORM\Table(name="employe", indexes={@ORM\Index(name="idUser_idx", columns={"idUser"}), @ORM\Index(name="idSociete_idx", columns={"idSociete"})})
+ * @ORM\Table(name="admin", indexes={@ORM\Index(name="idUser_idx", columns={"idUser"}), @ORM\Index(name="idSociete_idx", columns={"idSociete"})})
  * @ORM\Entity
  */
-class Employe
+class Admin
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="idEmploye", type="integer", nullable=false)
+     * @ORM\Column(name="idAdmin", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $idemploye;
+    private $idadmin;
 
     /**
      * @var \Societe
