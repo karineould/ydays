@@ -57,6 +57,10 @@
                 <header>
                     <h1>Projet de {{ app.user.username }}</h1>
                 </header>
+                {% if missions|length == 0 %}
+                     <p>créate mission</p>
+                {% else %}
+
                 <section class="tiles">
                     <article class="style1">
 									<span class="image">
@@ -192,6 +196,7 @@
                     </article>
                 </section>
             </div>
+            {% endif %}
         </div>
 
 
