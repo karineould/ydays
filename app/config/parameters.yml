@@ -1,10 +1,10 @@
 # This file is auto-generated during the composer install
 parameters:
     database_host: localhost
-    database_port: 8888
+    database_port: null
     database_name: ydays_dev_db
     database_user: root
-    database_password: root
+    database_password: null
     secret: dbab083585b2c412760e695a25c838897d1c369b
     mailer_transport: smtp
     mailer_host: 127.0.0.1
