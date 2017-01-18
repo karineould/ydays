@@ -16,7 +16,7 @@ class DefaultController extends Controller
         
         dump($test[0]->getUsername());
         
-        return $this->render('TimeProjectBundle:Default:index.html.twig', ['missions' => ['tet','tes'] ]);
+        return $this->render('TimeProjectBundle:Default:index.html.twig', ['missions' => [] ]);
     }
 
     public function loginAction()
