@@ -11,12 +11,12 @@ security:
 #                class:    OCUserBundle\Entity\User
 #                property: username
         main:
-            id: fos_user.user_provider.username
+            id: fos_user.user_provider.username_email
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            pattern: ^/(_(profiler|wdt)|css|images|js|register)/
             security: false
 
         # On crée un pare-feu uniquement pour le formulaire
