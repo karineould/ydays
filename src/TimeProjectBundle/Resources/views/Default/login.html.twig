@@ -5,6 +5,7 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('bundles/assets/css/login.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/assets/css/custumlogin.css') }}" />
 {% endblock %}
 
 
@@ -25,14 +26,15 @@
                 <form action="{{ path('login_check') }}" method="post">
                     <div class="row uniform">
                         <div class="12u$">
-                            <input type="text" name="_username" id="username" value="{{ last_username }}" placeholder="Email" />
+                            <input type="email" name="_username" id="username" value="{{ last_username }}" placeholder="Email" />
                         </div>
                         <div class="12u$">
                             <input type="password" name="_password" id="password" value="" placeholder="Mot de passe"/>
                         </div>
-                        <div class="12u$">
+                        <div class="6u 12u$(medium)" id="buttonc">
                             <ul class="actions">
-                                <input type="submit" value="Connexion" class="special" />
+                                <li><input type="submit" value="Connexion" class="special" /></li>
+                                <li><a href="#" class="button">Inscription</a></li>
                             </ul>
                         </div>
                     </div>

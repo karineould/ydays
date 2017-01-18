@@ -1,0 +1,3 @@
+.tiles article > .image:after {
+    background-image: none;
+}

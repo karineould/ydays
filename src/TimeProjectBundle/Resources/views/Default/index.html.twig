@@ -5,11 +5,12 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('bundles/assets/css/home.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/assets/css/custumhome.css') }}" />
 {% endblock %}
 
 
 {% block body %}
-    <!-- Wrapper -->
+
     <div id="wrapper">
 
         <!-- Header -->
@@ -21,49 +22,50 @@
                     <span class="symbol"><img src="{{ asset('bundles/images/logo_home.svg') }}" alt="" /></span>
                     <span class="title">TimeProject</span>
                 </a>
-
-                <form action="{{ path('logout') }}" method="get">
-                    <ul class="actions">
-                        <input type="submit" value="Déconnexion" class="special" />
-                    </ul>
-                </form>
                 <!-- Nav -->
-                <!-- <nav>
+                <nav>
                     <ul>
                         <li><a href="#menu">Menu</a></li>
                     </ul>
-                </nav> -->
+
+                </nav>
 
             </div>
         </header>
 
         <!-- Menu -->
         <nav id="menu">
-            <!-- <h2>Menu</h2>
+            <h2>Menu</h2>
             <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="#">Ipsum veroeros</a></li>
                 <li><a href="#">Tempus etiam</a></li>
                 <li><a href="#">Consequat dolor</a></li>
                 <li><a href="elements.html">Elements</a></li>
-            </ul> -->
+                <br>
+                <form action="{{ path('logout') }}" method="get">
+                    <il class="actions">
+                        <input type="submit" value="Déconnexion" class="special" />
+                    </il>
+                </form>
+            </ul>
         </nav>
 
         <!-- Main -->
         <div id="main">
             <div class="inner">
                 <header>
-                    <h1>Dashboard de {{ app.user.username }}</h1>
+                    <h1>Projet de {{ app.user.username }}</h1>
                 </header>
                 <section class="tiles">
                     <article class="style1">
 									<span class="image">
 										<img src="{{ asset('bundles/images/img01.jpg') }}" alt="" />
 									</span>
-                        <a href="#">
-                            <h2>Magna</h2>
+                        <a href="generic.html">
+                            <h2><img src="{{ asset('bundles/images/iconePlus2.png') }}" alt="" /></h2>
                             <div class="content">
-                                <p>Sed nisl arcu euismod sit amet nisi lorem etiam dolor veroeros et feugiat.</p>
+                                <p>Créer un Nouveau Projet</p>
                             </div>
                         </a>
                     </article>
@@ -192,7 +194,7 @@
             </div>
         </div>
 
-        <!-- Footer -->
+
         <footer id="footer">
         </footer>
 
@@ -201,13 +203,12 @@
 {% endblock %}
 
 {% block javascripts %}
-    <!-- Scripts -->
+
     <script src="{{ asset('bundles/assets/js/jquery.min.js') }}"></script>
     <script src="{{ asset('bundles/assets/js/jquery.scrollex.min.js') }}"></script>
     <script src="{{ asset('bundles/assets/js/jquery.scrolly.min.js') }}"></script>
     <script src="{{ asset('bundles/assets/js/skel.min.js') }}"></script>
     <script src="{{ asset('bundles/assets/js/util.js') }}"></script>
-    {#<script src="assets/js/util.js"></script>#}
     <script src="{{ asset('bundles/assets/js/home.js') }}"></script>
 
 
