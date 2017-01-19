@@ -12,6 +12,12 @@ login_check:
 logout:
     path:   /logout
 
+#fos_user_security_login:
+#    path:  /login
+#
+#fos_user_security_check:
+#    path:   /login_check
+
 fos_user_security:
     resource:  "@FOSUserBundle/Resources/config/routing/security.xml"
 
@@ -19,7 +25,7 @@ fos_user_profile:
     resource:  "@FOSUserBundle/Resources/config/routing/profile.xml"
     prefix:  /profile
 
-fos_user_register:
+fos_user_registration_register:
     resource:  "@FOSUserBundle/Resources/config/routing/registration.xml"
     prefix:  /register
 
@@ -29,4 +35,8 @@ fos_user_resetting:
 
 fos_user_change_password:
     resource:  "@FOSUserBundle/Resources/config/routing/change_password.xml"
-    prefix:  /profile
+    prefix:  /profile/change-password
+
+fos_user_profile_edit:
+    resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
+    prefix: /profile/edit
