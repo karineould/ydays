@@ -35,15 +35,10 @@
                         <div class="6u 12u$(medium)" id="buttonc">
                             <ul class="actions">
                                 <li><input type="submit" value="Connexion" class="special" /></li>
-                                <li><a href="#" class="button">Inscription</a></li>
+                                <li><a href="{{ path('fos_user_registration_register') }}" class="button">Inscription</a></li>
                             </ul>
                         </div>
                     </div>
-                </form>
-                <form action="{{ path('fos_user_registration_register') }}" method="get">
-                    <ul class="actions">
-                        <input type="submit" value="Inscription" class="special" />
-                    </ul>
                 </form>
             </div>
         </header>
