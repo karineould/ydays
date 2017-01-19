@@ -33,21 +33,21 @@ class Phinxlog
      *
      * @ORM\Column(name="start_time", type="datetime", nullable=false)
      */
-    private $startTime = 'CURRENT_TIMESTAMP';
+    private $startTime;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="end_time", type="datetime", nullable=false)
      */
-    private $endTime = '0000-00-00 00:00:00';
+    private $endTime;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="breakpoint", type="boolean", nullable=false)
      */
-    private $breakpoint = '0';
+    private $breakpoint;
 
 
 }

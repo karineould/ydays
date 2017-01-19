@@ -22,16 +22,6 @@ class MissionsEmploye
     private $idmissionsEmploye;
 
     /**
-     * @var \Employe
-     *
-     * @ORM\ManyToOne(targetEntity="Employe")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idEmploye", referencedColumnName="idEmploye")
-     * })
-     */
-    private $idemploye;
-
-    /**
      * @var \Missions
      *
      * @ORM\ManyToOne(targetEntity="Missions")
@@ -40,6 +30,16 @@ class MissionsEmploye
      * })
      */
     private $idmission;
+
+    /**
+     * @var \Employe
+     *
+     * @ORM\ManyToOne(targetEntity="Employe")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idEmploye", referencedColumnName="idEmploye")
+     * })
+     */
+    private $idemploye;
 
 
 }

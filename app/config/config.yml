@@ -75,19 +75,26 @@ fos_user:
     db_driver:     orm
     firewall_name: main
     user_class:    OCUserBundle\Entity\User
-    service:
-        mailer: fos_user.mailer.twig_swift
+    from_email:
+        address:        no-reply@gmail.com
+#        address:        janany.perinparajah@ynov.com
+        sender_name:    TimeProject
     registration:
-        confirmation:
-            template:   FOSUserBundle:Registration:email.txt.twig
 #        confirmation:
-#            from_email:
-#                address: no-reply@timeproject.com
-#                sender_name: TimeProject Inscription
-    resetting:
+#            enabled:    true
+#    service:
+#        mailer: fos_user.mailer.twig_swift
+#    registration:
+#        confirmation:
+#            template:   FOSUserBundle:Registration:email.txt.twig
+##        confirmation:
+##            from_email:
+##                address: no-reply@timeproject.com
+##                sender_name: TimeProject Inscription
+#    resetting:
+##        email:
+##            from_email:
+##                address:        no-reply@timeproject.com
+##                sender_name:    TimeProject Resetting
 #        email:
-#            from_email:
-#                address:        no-reply@timeproject.com
-#                sender_name:    TimeProject Resetting
-        email:
-            template:   email/password_resetting.email.twig
+#            template:   email/password_resetting.email.twig

@@ -22,16 +22,6 @@ class CategorieMissionSociete
     private $idcategorieMissionSociete;
 
     /**
-     * @var \CategorieMission
-     *
-     * @ORM\ManyToOne(targetEntity="CategorieMission")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idCategorie_mission", referencedColumnName="idCategorie_mission")
-     * })
-     */
-    private $idcategorieMission;
-
-    /**
      * @var \Societe
      *
      * @ORM\ManyToOne(targetEntity="Societe")
@@ -40,6 +30,16 @@ class CategorieMissionSociete
      * })
      */
     private $idsociete;
+
+    /**
+     * @var \CategorieMission
+     *
+     * @ORM\ManyToOne(targetEntity="CategorieMission")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idCategorie_mission", referencedColumnName="idCategorie_mission")
+     * })
+     */
+    private $idcategorieMission;
 
 
 
@@ -51,30 +51,6 @@ class CategorieMissionSociete
     public function getIdcategorieMissionSociete()
     {
         return $this->idcategorieMissionSociete;
-    }
-
-    /**
-     * Set idcategorieMission
-     *
-     * @param \TimeProjectBundle\Entity\CategorieMission $idcategorieMission
-     *
-     * @return CategorieMissionSociete
-     */
-    public function setIdcategorieMission(\TimeProjectBundle\Entity\CategorieMission $idcategorieMission = null)
-    {
-        $this->idcategorieMission = $idcategorieMission;
-
-        return $this;
-    }
-
-    /**
-     * Get idcategorieMission
-     *
-     * @return \TimeProjectBundle\Entity\CategorieMission
-     */
-    public function getIdcategorieMission()
-    {
-        return $this->idcategorieMission;
     }
 
     /**
@@ -99,5 +75,29 @@ class CategorieMissionSociete
     public function getIdsociete()
     {
         return $this->idsociete;
+    }
+
+    /**
+     * Set idcategorieMission
+     *
+     * @param \TimeProjectBundle\Entity\CategorieMission $idcategorieMission
+     *
+     * @return CategorieMissionSociete
+     */
+    public function setIdcategorieMission(\TimeProjectBundle\Entity\CategorieMission $idcategorieMission = null)
+    {
+        $this->idcategorieMission = $idcategorieMission;
+
+        return $this;
+    }
+
+    /**
+     * Get idcategorieMission
+     *
+     * @return \TimeProjectBundle\Entity\CategorieMission
+     */
+    public function getIdcategorieMission()
+    {
+        return $this->idcategorieMission;
     }
 }
