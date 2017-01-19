@@ -29,3 +29,28 @@ décommenter la ligne : Include /Applications/MAMP/conf/apache/extra/httpd-vhost
 Commandes à exécuter sur le shell :
 1) git clone https://github.com/karineould/ydays
 2) composer install
+
+
+
+
+# mapping avec la base de données et création des fichers xml 
+# Import the structure
+# Generate Entities file class
+
+php bin/console doctrine:mapping:convert annotation ./src/TimeProjectBundle/Resources/config/doctrine/metadata/orm --from-database --force
+
+php bin/console doctrine:mapping:import TimeProjectBundle annotation
+
+php bin/console doctrine:generate:entities TimeProjectBundle 
+
+
+# genera un user
+php bin/console fos:user:create
+
+# mettre à jour la base de données selon les entités existants
+php bin/console doctrine:schema:update --force --complete
+
+# vider le cache
+php bin/console cache:clear
+
+php bin/console doctrine:schema:validate
