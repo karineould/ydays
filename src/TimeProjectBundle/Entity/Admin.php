@@ -22,6 +22,16 @@ class Admin
     private $idadmin;
 
     /**
+     * @var \User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idUser", referencedColumnName="id")
+     * })
+     */
+    private $iduser;
+
+    /**
      * @var \Societe
      *
      * @ORM\ManyToOne(targetEntity="Societe")
@@ -30,16 +40,6 @@ class Admin
      * })
      */
     private $idsociete;
-
-    /**
-     * @var \Users
-     *
-     * @ORM\ManyToOne(targetEntity="Users")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idUser", referencedColumnName="idUser")
-     * })
-     */
-    private $iduser;
 
 
 
@@ -51,6 +51,30 @@ class Admin
     public function getIdadmin()
     {
         return $this->idadmin;
+    }
+
+    /**
+     * Set iduser
+     *
+     * @param \TimeProjectBundle\Entity\User $iduser
+     *
+     * @return Admin
+     */
+    public function setIduser(\TimeProjectBundle\Entity\User $iduser = null)
+    {
+        $this->iduser = $iduser;
+
+        return $this;
+    }
+
+    /**
+     * Get iduser
+     *
+     * @return \TimeProjectBundle\Entity\User
+     */
+    public function getIduser()
+    {
+        return $this->iduser;
     }
 
     /**
@@ -75,29 +99,5 @@ class Admin
     public function getIdsociete()
     {
         return $this->idsociete;
-    }
-
-    /**
-     * Set iduser
-     *
-     * @param \TimeProjectBundle\Entity\Users $iduser
-     *
-     * @return Admin
-     */
-    public function setIduser(\TimeProjectBundle\Entity\Users $iduser = null)
-    {
-        $this->iduser = $iduser;
-
-        return $this;
-    }
-
-    /**
-     * Get iduser
-     *
-     * @return \TimeProjectBundle\Entity\Users
-     */
-    public function getIduser()
-    {
-        return $this->iduser;
     }
 }

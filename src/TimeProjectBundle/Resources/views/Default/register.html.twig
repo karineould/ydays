@@ -1,6 +1,6 @@
 {# src/TimeProjectBundle/Resources/views/Default/register.html.twig #}
 {% extends 'TimeProjectBundle::layout.html.twig' %}
-{% trans_default_domain 'FOSUserBundle' %}
+{#{% trans_default_domain 'FOSUserBundle' %}#}
 
 {% block title %}{{ parent() }} - Inscription {% endblock %}
 
@@ -27,16 +27,28 @@
                     {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
                         <div class="row uniform" id="fos_user_registration_form">
                             <div class="6u 12u$(xsmall)">
-                                {{ form_widget(form.username) }}
+                                {{ form_widget(form.username, {
+                                    'attr': {'class': "span12",
+                                    'placeholder': "Pseudo"} })
+                                }}
                             </div>
                             <div class="6u$ 12u$(xsmall)">
-                                {{ form_widget(form.email) }}
+                                {{ form_widget(form.email, {
+                                    'attr': {'class': "span12",
+                                    'placeholder': "Email"} })
+                                }}
                             </div>
                             <div class="12u$">
-                                {{ form_widget(form.plainPassword.first) }}
+                                {{ form_widget(form.plainPassword.first, {
+                                    'attr': {'class': "span12",
+                                    'placeholder': "Mot de passe"} })
+                                }}
                             </div>
                             <div class="12u$">
-                                {{ form_widget(form.plainPassword.second) }}
+                                {{ form_widget(form.plainPassword.second, {
+                                    'attr': {'class': "span12",
+                                    'placeholder': "Confirmez le mot de passe"} })
+                                }}
                             </div>
                         </div>
                         <br/>

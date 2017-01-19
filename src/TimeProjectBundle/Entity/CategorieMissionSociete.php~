@@ -22,16 +22,6 @@ class CategorieMissionSociete
     private $idcategorieMissionSociete;
 
     /**
-     * @var \CategorieMission
-     *
-     * @ORM\ManyToOne(targetEntity="CategorieMission")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idCategorie_mission", referencedColumnName="idCategorie_mission")
-     * })
-     */
-    private $idcategorieMission;
-
-    /**
      * @var \Societe
      *
      * @ORM\ManyToOne(targetEntity="Societe")
@@ -40,6 +30,16 @@ class CategorieMissionSociete
      * })
      */
     private $idsociete;
+
+    /**
+     * @var \CategorieMission
+     *
+     * @ORM\ManyToOne(targetEntity="CategorieMission")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idCategorie_mission", referencedColumnName="idCategorie_mission")
+     * })
+     */
+    private $idcategorieMission;
 
 
 }

@@ -40,7 +40,7 @@ class Notification
      *
      * @ORM\Column(name="isValidation", type="integer", nullable=false)
      */
-    private $isvalidation = '0';
+    private $isvalidation;
 
     /**
      * @var string

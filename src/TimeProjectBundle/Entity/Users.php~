@@ -54,7 +54,7 @@ class Users
      *
      * @ORM\Column(name="isDeleted", type="integer", nullable=false)
      */
-    private $isdeleted = '0';
+    private $isdeleted;
 
 
 }
