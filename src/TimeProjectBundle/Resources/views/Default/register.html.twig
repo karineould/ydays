@@ -1,0 +1,64 @@
+{# src/TimeProjectBundle/Resources/views/Default/register.html.twig #}
+{% extends 'TimeProjectBundle::layout.html.twig' %}
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block title %}{{ parent() }} - Inscription {% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/assets/css/login.css') }}" />
+{% endblock %}
+
+
+{% block body %}
+    <!-- Wrapper -->
+    <div id="wrapper">
+
+        <!-- Header -->
+        <header id="header">
+            <h1>Inscription</h1>
+            <p>Renseigner les champs</p>
+        </header>
+
+        <!-- Main -->
+        <div id="main">
+            <!-- Content -->
+            <section id="content" class="main">
+                <section>
+                    {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+                        <div class="row uniform" id="fos_user_registration_form">
+                            <div class="6u 12u$(xsmall)">
+                                {{ form_widget(form.username) }}
+                            </div>
+                            <div class="6u$ 12u$(xsmall)">
+                                {{ form_widget(form.email) }}
+                            </div>
+                            <div class="12u$">
+                                {{ form_widget(form.plainPassword.first) }}
+                            </div>
+                            <div class="12u$">
+                                {{ form_widget(form.plainPassword.second) }}
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="12u$(medium)">
+                            <ul class="actions">
+                                <li><input type="submit" value="Créer mon compte" class="special" /></li>
+                            </ul>
+                        </div>
+                    {{ form_end(form) }}
+                </section>
+            </section>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <!-- Scripts -->
+    <script src="{{ asset('bundles/assets/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('bundles/assets/js/jquery.scrollex.min.js') }}"></script>
+    <script src="{{ asset('bundles/assets/js/jquery.scrolly.min.js') }}"></script>
+    <script src="{{ asset('bundles/assets/js/skel.min.js') }}"></script>
+    <script src="{{ asset('bundles/assets/js/util.js') }}"></script>
+    <script src="{{ asset('bundles/assets/js/main.js') }}"></script>
+
+{% endblock %}

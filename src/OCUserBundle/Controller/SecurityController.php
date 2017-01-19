@@ -19,7 +19,7 @@ class SecurityController extends Controller
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
 //        dump($this->get('security.authorization_checker')->getToken()->getUser());
-        dump($user);
+
 
         // Le service authentication_utils permet de récupérer le nom d'utilisateur
         // et l'erreur dans le cas où le formulaire a déjà été soumis mais était invalide

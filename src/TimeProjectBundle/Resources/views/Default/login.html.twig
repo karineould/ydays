@@ -19,11 +19,12 @@
             <h1>TimeProject</h1>
             <div id="conect">
                 {# S'il y a une erreur, on l'affiche dans un joli cadre #}
-                {% if error %}
-                    <div class="alert alert-danger">{{ error.message }}</div>
-                {% endif %}
+                {#{% if error %}#}
+                    {#<div class="alert alert-danger">{{ error.message }}</div>#}
+                {#{% endif %}#}
 
                 <form action="{{ path('login_check') }}" method="post">
+                {#<form action="{{ path('fos_user_security_check') }}" method="post">#}
                     <div class="row uniform">
                         <div class="12u$">
                             <input type="email" name="_username" id="username" value="{{ last_username }}" placeholder="Email" />
