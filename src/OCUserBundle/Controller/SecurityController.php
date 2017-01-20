@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use TimeProjectBundle\Entity\Admin;
 
 class SecurityController extends Controller
 {
@@ -115,8 +116,16 @@ class SecurityController extends Controller
         if (null === $user) {
             throw new NotFoundHttpException(sprintf('The user with email "%s" does not exist', $email));
         }
-//        $mailer = $this->get('fos_user.mailer');
-//        $mailer->sendConfirmationEmailMessage($user);
+
+
+        // on ajoute l'utilisateur qui vient de s'inscrire dans la table admin
+        $admin = new Admin();
+        $admin->setIdUser( $this->getDoctrine()
+                                ->getRepository('TimeProjectBundle:User')
+                                ->find($user->getId()));
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($admin);
+        $em->flush();
 
         return $this->render('@FOSUser/Registration/check_email.html.twig', array(
             'user' => $user,

@@ -1,6 +1,6 @@
 {# src/TimeProjectBundle/Resources/views/Default/register.html.twig #}
 {% extends 'TimeProjectBundle::layout.html.twig' %}
-{#{% trans_default_domain 'FOSUserBundle' %}#}
+{% trans_default_domain 'FOSUserBundle' %}
 
 {% block title %}{{ parent() }} - Inscription {% endblock %}
 
@@ -24,7 +24,16 @@
             <!-- Content -->
             <section id="content" class="main">
                 <section>
+                    {% if message is defined %}
+                        <div class="">
+                            {{ message|trans({}, 'FOSUserBundle') }}
+                        </div>
+                    {% endif %}
                     {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+                        {{ form_errors(form.username) }}
+                        {{ form_errors(form.email) }}
+                        {{ form_errors(form.plainPassword.first) }}
+                        {{ form_errors(form.plainPassword.second) }}
                         <div class="row uniform" id="fos_user_registration_form">
                             <div class="6u 12u$(xsmall)">
                                 {{ form_widget(form.username, {
@@ -39,12 +48,14 @@
                                 }}
                             </div>
                             <div class="12u$">
+                                <label for="fos_user_registration_form_plainPassword_first" class="required"></label>
                                 {{ form_widget(form.plainPassword.first, {
                                     'attr': {'class': "span12",
                                     'placeholder': "Mot de passe"} })
                                 }}
                             </div>
                             <div class="12u$">
+                                <label for="fos_user_registration_form_plainPassword_second" class="required"></label>
                                 {{ form_widget(form.plainPassword.second, {
                                     'attr': {'class': "span12",
                                     'placeholder': "Confirmez le mot de passe"} })
