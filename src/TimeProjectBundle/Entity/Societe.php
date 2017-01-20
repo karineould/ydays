@@ -64,16 +64,6 @@ class Societe
     private $statutJuridique;
 
     /**
-     * @var \Adresse
-     *
-     * @ORM\ManyToOne(targetEntity="Adresse")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idAdresse", referencedColumnName="id")
-     * })
-     */
-    private $idadresse;
-
-    /**
      * @var \Admin
      *
      * @ORM\ManyToOne(targetEntity="Admin")
@@ -82,6 +72,16 @@ class Societe
      * })
      */
     private $idadmin;
+
+    /**
+     * @var \Adresse
+     *
+     * @ORM\ManyToOne(targetEntity="Adresse")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idAdresse", referencedColumnName="id")
+     * })
+     */
+    private $idadresse;
 
     /**
      * @var \SecteurSociete
@@ -250,30 +250,6 @@ class Societe
     }
 
     /**
-     * Set idadresse
-     *
-     * @param \TimeProjectBundle\Entity\Adresse $idadresse
-     *
-     * @return Societe
-     */
-    public function setIdadresse(\TimeProjectBundle\Entity\Adresse $idadresse = null)
-    {
-        $this->idadresse = $idadresse;
-
-        return $this;
-    }
-
-    /**
-     * Get idadresse
-     *
-     * @return \TimeProjectBundle\Entity\Adresse
-     */
-    public function getIdadresse()
-    {
-        return $this->idadresse;
-    }
-
-    /**
      * Set idadmin
      *
      * @param \TimeProjectBundle\Entity\Admin $idadmin
@@ -295,6 +271,30 @@ class Societe
     public function getIdadmin()
     {
         return $this->idadmin;
+    }
+
+    /**
+     * Set idadresse
+     *
+     * @param \TimeProjectBundle\Entity\Adresse $idadresse
+     *
+     * @return Societe
+     */
+    public function setIdadresse(\TimeProjectBundle\Entity\Adresse $idadresse = null)
+    {
+        $this->idadresse = $idadresse;
+
+        return $this;
+    }
+
+    /**
+     * Get idadresse
+     *
+     * @return \TimeProjectBundle\Entity\Adresse
+     */
+    public function getIdadresse()
+    {
+        return $this->idadresse;
     }
 
     /**
