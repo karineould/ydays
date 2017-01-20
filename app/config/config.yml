@@ -64,37 +64,33 @@ doctrine:
         auto_mapping: true
 
 # Swiftmailer Configuration
-#swiftmailer:
-#    transport: "%mailer_transport%"
-#    host:      "%mailer_host%"
-#    username:  "%mailer_user%"
-#    password:  "%mailer_password%"
-#    spool:     { type: memory }
+swiftmailer:
+    transport: "%mailer_transport%"
+    encryption: "%mailer_encryption%"
+    host:      "%mailer_host%"
+#    auth_mode: "%mailer_auth_mode%" login
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
+    spool:     { type: memory }
 
 fos_user:
     db_driver:     orm
     firewall_name: main
     user_class:    OCUserBundle\Entity\User
-    from_email:
-        address:        no-reply@gmail.com
-#        address:        janany.perinparajah@ynov.com
-        sender_name:    TimeProject
+
     registration:
-#        confirmation:
-#            enabled:    true
-#    service:
-#        mailer: fos_user.mailer.twig_swift
-#    registration:
-#        confirmation:
-#            template:   FOSUserBundle:Registration:email.txt.twig
-##        confirmation:
-##            from_email:
-##                address: no-reply@timeproject.com
-##                sender_name: TimeProject Inscription
-#    resetting:
-##        email:
-##            from_email:
-##                address:        no-reply@timeproject.com
-##                sender_name:    TimeProject Resetting
-#        email:
-#            template:   email/password_resetting.email.twig
+        confirmation:
+            enabled:    true
+            template:   FOSUserBundle:Registration:email.txt.twig
+            from_email:
+                address: contact.timeproject@gmail.com
+                sender_name: TimeProject Inscription
+    service:
+        mailer: fos_user.mailer.twig_swift
+    resetting:
+        email:
+            from_email:
+                address:        contact.timeproject@gmail.com
+                sender_name:    TimeProject Resetting
+        email:
+            template:   email/password_resetting.email.twig

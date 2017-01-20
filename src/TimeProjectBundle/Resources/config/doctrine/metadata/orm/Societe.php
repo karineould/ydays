@@ -64,16 +64,6 @@ class Societe
     private $statutJuridique;
 
     /**
-     * @var \Adresse
-     *
-     * @ORM\ManyToOne(targetEntity="Adresse")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idAdresse", referencedColumnName="id")
-     * })
-     */
-    private $idadresse;
-
-    /**
      * @var \Admin
      *
      * @ORM\ManyToOne(targetEntity="Admin")
@@ -82,6 +72,16 @@ class Societe
      * })
      */
     private $idadmin;
+
+    /**
+     * @var \Adresse
+     *
+     * @ORM\ManyToOne(targetEntity="Adresse")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idAdresse", referencedColumnName="id")
+     * })
+     */
+    private $idadresse;
 
     /**
      * @var \SecteurSociete
