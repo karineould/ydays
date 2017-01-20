@@ -16,7 +16,15 @@ class DefaultController extends Controller
 //        dump($test[0]->getUsername());
 
         // récupération de l'utilisateur connecté ---> $user = $this->getUser();
-        if($this->getUser()){
+        $user = $this->getUser();
+        if($user){
+            $admin = $this->getDoctrine()
+                            ->getRepository('TimeProjectBundle:Admin')
+                            ->findOneByIduser(["iduser" => $user->getId()]);
+//            dump($admin);
+            if($admin->getIdsociete() == null){
+                return $this->render('TimeProjectBundle:Default:createSociety.html.twig');
+            }
             return $this->render('TimeProjectBundle:Default:index.html.twig', ['missions' => [] ]);
         } else {
             return $this->redirectToRoute('login');
