@@ -1,3 +1,7 @@
 time_project_homepage:
     path:     /
     defaults: { _controller: TimeProjectBundle:Default:index }
+
+createSociety:
+    path: /createSociety
+    defaults: { _controller: TimeProjectBundle:Default:createSociety }

@@ -1,3 +1,6 @@
 .tiles article > .image:after {
     background-image: none;
 }
+#societyDescription{
+    resize: none;
+}
