@@ -1,0 +1,88 @@
+{% extends 'TimeProjectBundle::layout.html.twig' %}
+
+{% block tilte %} {{ parent() }} - Configuration de la société {% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/assets/css/home.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/assets/css/custumhome.css') }}" />
+{% endblock %}
+
+{% block body %}
+    <div id="wrapper">
+        <header id="header">
+        </header>
+        <div id="main">
+            <div class="inner">
+                <h2>Renseignez les information de votre entreprise</h2>
+                <form action="" method="post">
+                    <div class="row uniform">
+                        <div class="8u"><input type="text" id="societyName" name="societyName" placeholder="dénomination"></div>
+                        <div class="4u$">
+                            <div class="select-wrapper">
+                                <select name="" id="">
+                                    <option value> - Forme juridique - </option>
+                                    <option value="1"> EARL </option>
+                                    <option value="1"> EI </option>
+                                    <option value="1"> EIRL </option>
+                                    <option value="1"> EURL </option>
+                                    <option value="1"> GAEC </option>
+                                    <option value="1"> GEIE </option>
+                                    <option value="1"> GIE </option>
+                                    <option value="1"> SARL </option>
+                                    <option value="1"> SA </option>
+                                    <option value="1"> SAS </option>
+                                    <option value="1"> SASU </option>
+                                    <option value="1"> SC </option>
+                                    <option value="1"> SCA </option>
+                                    <option value="1"> SCI </option>
+                                    <option value="1"> SCIC </option>
+                                    <option value="1"> SCM </option>
+                                    <option value="1"> SCOP </option>
+                                    <option value="1"> SCP </option>
+                                    <option value="1"> SCS </option>
+                                    <option value="1"> SEL </option>
+                                    <option value="1"> SELAFA </option>
+                                    <option value="1"> SELARL </option>
+                                    <option value="1"> SELAS </option>
+                                    <option value="1"> SELCA </option>
+                                    <option value="1"> SEM </option>
+                                    <option value="1"> SEML </option>
+                                    <option value="1"> SEP </option>
+                                    <option value="1"> SICA </option>
+                                    <option value="1"> SNC </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="12u$">
+                            <div class="textarea-wrapper">
+                                <textarea name="societyDescription" id="societyDescription" placeholder="Principale(s) activite(s)" ></textarea>
+                            </div>
+                        </div>
+                        <div class="12u$"><h4>Adresse de la société<h4></div>
+                        <div class="1u"><input type="text" id="streetNumber" name="streetNumber" placeholder="N°"></div>
+                        <div class="11u$"><input type="text" id="societyAddress" name="streetName" placeholder="Rue"></div>
+                        <div class="2u"><input type="text" id="societyCodePostal" name="societyCodePostal" placeholder="75 000 ..."></div>
+                        <div class="10u$"><input type="text" id="societyTown" name="societyTown" placeholder="ville"></div>
+                        <div class="12u$"><input type="text" id="societyCountry" name="societyCountry" placeholder="Pays"></div>
+                        <div class="12u$">
+                            <ul class="actions">
+                                <li><input type="submit" class="special" value="Enregistrer"></li>
+                                <li><input type="reset" value="annuler"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('bundles/assets/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('bundles/assets/js/jquery.scrollex.min.js') }}"></script>
+    <script src="{{ asset('bundles/assets/js/jquery.scrolly.min.js') }}"></script>
+    <script src="{{ asset('bundles/assets/js/skel.min.js') }}"></script>
+    <script src="{{ asset('bundles/assets/js/util.js') }}"></script>
+    <script src="{{ asset('bundles/assets/js/main.js') }}"></script>
+{% endblock %}

@@ -10,7 +10,6 @@ class DefaultController extends Controller
 {
     public function indexAction(Request $request)
     {
-
 //        $em = $this->getDoctrine()->getManager();
 //        $test = $em->getRepository('OCUserBundle:User')->findExempleJan();
 //        dump($test[0]->getUsername());
@@ -34,5 +33,9 @@ class DefaultController extends Controller
     public function loginAction()
     {
         return $this->render('TimeProjectBundle:Default:login.html.twig');
+    }
+
+    public function createSocietyAction(){
+        return $this->render('TimeProjectBundle:Default:societyConf.html.twig');
     }
 }
