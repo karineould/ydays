@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Societe
  *
- * @ORM\Table(name="societe", indexes={@ORM\Index(name="idSecteur_idx", columns={"idSecteur_societe"}), @ORM\Index(name="idAdmin_idx", columns={"idAdmin"})})
+ * @ORM\Table(name="societe", indexes={@ORM\Index(name="idSecteur_idx", columns={"idSecteur_societe"}), @ORM\Index(name="idAdmin_idx", columns={"idAdmin"}), @ORM\Index(name="idAdresse", columns={"idAdresse"})})
  * @ORM\Entity
  */
 class Societe
@@ -31,16 +31,37 @@ class Societe
     /**
      * @var string
      *
-     * @ORM\Column(name="adresse", type="string", length=45, nullable=true)
+     * @ORM\Column(name="telephone", type="string", length=20, nullable=true)
      */
-    private $adresse;
+    private $telephone;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Societecol", type="string", length=45, nullable=true)
+     * @ORM\Column(name="portable", type="string", length=20, nullable=true)
      */
-    private $societecol;
+    private $portable;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="fax", type="string", length=20, nullable=true)
+     */
+    private $fax;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="site_web", type="string", length=100, nullable=true)
+     */
+    private $siteWeb;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="statut_juridique", type="string", length=50, nullable=true)
+     */
+    private $statutJuridique;
 
     /**
      * @var \Admin
@@ -51,6 +72,16 @@ class Societe
      * })
      */
     private $idadmin;
+
+    /**
+     * @var \Adresse
+     *
+     * @ORM\ManyToOne(targetEntity="Adresse")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idAdresse", referencedColumnName="id")
+     * })
+     */
+    private $idadresse;
 
     /**
      * @var \SecteurSociete
@@ -99,51 +130,123 @@ class Societe
     }
 
     /**
-     * Set adresse
+     * Set telephone
      *
-     * @param string $adresse
+     * @param string $telephone
      *
      * @return Societe
      */
-    public function setAdresse($adresse)
+    public function setTelephone($telephone)
     {
-        $this->adresse = $adresse;
+        $this->telephone = $telephone;
 
         return $this;
     }
 
     /**
-     * Get adresse
+     * Get telephone
      *
      * @return string
      */
-    public function getAdresse()
+    public function getTelephone()
     {
-        return $this->adresse;
+        return $this->telephone;
     }
 
     /**
-     * Set societecol
+     * Set portable
      *
-     * @param string $societecol
+     * @param string $portable
      *
      * @return Societe
      */
-    public function setSocietecol($societecol)
+    public function setPortable($portable)
     {
-        $this->societecol = $societecol;
+        $this->portable = $portable;
 
         return $this;
     }
 
     /**
-     * Get societecol
+     * Get portable
      *
      * @return string
      */
-    public function getSocietecol()
+    public function getPortable()
     {
-        return $this->societecol;
+        return $this->portable;
+    }
+
+    /**
+     * Set fax
+     *
+     * @param string $fax
+     *
+     * @return Societe
+     */
+    public function setFax($fax)
+    {
+        $this->fax = $fax;
+
+        return $this;
+    }
+
+    /**
+     * Get fax
+     *
+     * @return string
+     */
+    public function getFax()
+    {
+        return $this->fax;
+    }
+
+    /**
+     * Set siteWeb
+     *
+     * @param string $siteWeb
+     *
+     * @return Societe
+     */
+    public function setSiteWeb($siteWeb)
+    {
+        $this->siteWeb = $siteWeb;
+
+        return $this;
+    }
+
+    /**
+     * Get siteWeb
+     *
+     * @return string
+     */
+    public function getSiteWeb()
+    {
+        return $this->siteWeb;
+    }
+
+    /**
+     * Set statutJuridique
+     *
+     * @param string $statutJuridique
+     *
+     * @return Societe
+     */
+    public function setStatutJuridique($statutJuridique)
+    {
+        $this->statutJuridique = $statutJuridique;
+
+        return $this;
+    }
+
+    /**
+     * Get statutJuridique
+     *
+     * @return string
+     */
+    public function getStatutJuridique()
+    {
+        return $this->statutJuridique;
     }
 
     /**
@@ -168,6 +271,30 @@ class Societe
     public function getIdadmin()
     {
         return $this->idadmin;
+    }
+
+    /**
+     * Set idadresse
+     *
+     * @param \TimeProjectBundle\Entity\Adresse $idadresse
+     *
+     * @return Societe
+     */
+    public function setIdadresse(\TimeProjectBundle\Entity\Adresse $idadresse = null)
+    {
+        $this->idadresse = $idadresse;
+
+        return $this;
+    }
+
+    /**
+     * Get idadresse
+     *
+     * @return \TimeProjectBundle\Entity\Adresse
+     */
+    public function getIdadresse()
+    {
+        return $this->idadresse;
     }
 
     /**

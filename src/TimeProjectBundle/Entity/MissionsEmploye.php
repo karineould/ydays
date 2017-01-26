@@ -22,16 +22,6 @@ class MissionsEmploye
     private $idmissionsEmploye;
 
     /**
-     * @var \Employe
-     *
-     * @ORM\ManyToOne(targetEntity="Employe")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idEmploye", referencedColumnName="idEmploye")
-     * })
-     */
-    private $idemploye;
-
-    /**
      * @var \Missions
      *
      * @ORM\ManyToOne(targetEntity="Missions")
@@ -40,6 +30,16 @@ class MissionsEmploye
      * })
      */
     private $idmission;
+
+    /**
+     * @var \Employe
+     *
+     * @ORM\ManyToOne(targetEntity="Employe")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idEmploye", referencedColumnName="idEmploye")
+     * })
+     */
+    private $idemploye;
 
 
 
@@ -51,30 +51,6 @@ class MissionsEmploye
     public function getIdmissionsEmploye()
     {
         return $this->idmissionsEmploye;
-    }
-
-    /**
-     * Set idemploye
-     *
-     * @param \TimeProjectBundle\Entity\Employe $idemploye
-     *
-     * @return MissionsEmploye
-     */
-    public function setIdemploye(\TimeProjectBundle\Entity\Employe $idemploye = null)
-    {
-        $this->idemploye = $idemploye;
-
-        return $this;
-    }
-
-    /**
-     * Get idemploye
-     *
-     * @return \TimeProjectBundle\Entity\Employe
-     */
-    public function getIdemploye()
-    {
-        return $this->idemploye;
     }
 
     /**
@@ -99,5 +75,29 @@ class MissionsEmploye
     public function getIdmission()
     {
         return $this->idmission;
+    }
+
+    /**
+     * Set idemploye
+     *
+     * @param \TimeProjectBundle\Entity\Employe $idemploye
+     *
+     * @return MissionsEmploye
+     */
+    public function setIdemploye(\TimeProjectBundle\Entity\Employe $idemploye = null)
+    {
+        $this->idemploye = $idemploye;
+
+        return $this;
+    }
+
+    /**
+     * Get idemploye
+     *
+     * @return \TimeProjectBundle\Entity\Employe
+     */
+    public function getIdemploye()
+    {
+        return $this->idemploye;
     }
 }
