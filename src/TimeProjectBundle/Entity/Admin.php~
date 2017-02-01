@@ -32,11 +32,11 @@ class Admin
     private $idsociete;
 
     /**
-     * @var \User
+     * @var \Users
      *
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="Users")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idUser", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="idUser", referencedColumnName="idUser")
      * })
      */
     private $iduser;

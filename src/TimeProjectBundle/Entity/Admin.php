@@ -32,11 +32,11 @@ class Admin
     private $idsociete;
 
     /**
-     * @var \User
+     * @var \Users
      *
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="Users")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idUser", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="idUser", referencedColumnName="idUser")
      * })
      */
     private $iduser;
@@ -80,11 +80,11 @@ class Admin
     /**
      * Set iduser
      *
-     * @param \TimeProjectBundle\Entity\User $iduser
+     * @param \TimeProjectBundle\Entity\Users $iduser
      *
      * @return Admin
      */
-    public function setIduser(\TimeProjectBundle\Entity\User $iduser = null)
+    public function setIduser(\TimeProjectBundle\Entity\Users $iduser = null)
     {
         $this->iduser = $iduser;
 
@@ -94,7 +94,7 @@ class Admin
     /**
      * Get iduser
      *
-     * @return \TimeProjectBundle\Entity\User
+     * @return \TimeProjectBundle\Entity\Users
      */
     public function getIduser()
     {

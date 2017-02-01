@@ -74,16 +74,6 @@ class Societe
     private $idadmin;
 
     /**
-     * @var \Adresse
-     *
-     * @ORM\ManyToOne(targetEntity="Adresse")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idAdresse", referencedColumnName="id")
-     * })
-     */
-    private $idadresse;
-
-    /**
      * @var \SecteurSociete
      *
      * @ORM\ManyToOne(targetEntity="SecteurSociete")
@@ -92,6 +82,16 @@ class Societe
      * })
      */
     private $idsecteurSociete;
+
+    /**
+     * @var \Adresse
+     *
+     * @ORM\ManyToOne(targetEntity="Adresse")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idAdresse", referencedColumnName="id")
+     * })
+     */
+    private $idadresse;
 
 
 
@@ -274,30 +274,6 @@ class Societe
     }
 
     /**
-     * Set idadresse
-     *
-     * @param \TimeProjectBundle\Entity\Adresse $idadresse
-     *
-     * @return Societe
-     */
-    public function setIdadresse(\TimeProjectBundle\Entity\Adresse $idadresse = null)
-    {
-        $this->idadresse = $idadresse;
-
-        return $this;
-    }
-
-    /**
-     * Get idadresse
-     *
-     * @return \TimeProjectBundle\Entity\Adresse
-     */
-    public function getIdadresse()
-    {
-        return $this->idadresse;
-    }
-
-    /**
      * Set idsecteurSociete
      *
      * @param \TimeProjectBundle\Entity\SecteurSociete $idsecteurSociete
@@ -319,5 +295,29 @@ class Societe
     public function getIdsecteurSociete()
     {
         return $this->idsecteurSociete;
+    }
+
+    /**
+     * Set idadresse
+     *
+     * @param \TimeProjectBundle\Entity\Adresse $idadresse
+     *
+     * @return Societe
+     */
+    public function setIdadresse(\TimeProjectBundle\Entity\Adresse $idadresse = null)
+    {
+        $this->idadresse = $idadresse;
+
+        return $this;
+    }
+
+    /**
+     * Get idadresse
+     *
+     * @return \TimeProjectBundle\Entity\Adresse
+     */
+    public function getIdadresse()
+    {
+        return $this->idadresse;
     }
 }
