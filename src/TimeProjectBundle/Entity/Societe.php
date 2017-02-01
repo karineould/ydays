@@ -74,16 +74,6 @@ class Societe
     private $idadmin;
 
     /**
-     * @var \SecteurSociete
-     *
-     * @ORM\ManyToOne(targetEntity="SecteurSociete")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idSecteur_societe", referencedColumnName="idSecteur_societe")
-     * })
-     */
-    private $idsecteurSociete;
-
-    /**
      * @var \Adresse
      *
      * @ORM\ManyToOne(targetEntity="Adresse")
@@ -92,6 +82,16 @@ class Societe
      * })
      */
     private $idadresse;
+
+    /**
+     * @var \SecteurSociete
+     *
+     * @ORM\ManyToOne(targetEntity="SecteurSociete")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idSecteur_societe", referencedColumnName="idSecteur_societe")
+     * })
+     */
+    private $idsecteurSociete;
 
 
 
@@ -274,30 +274,6 @@ class Societe
     }
 
     /**
-     * Set idsecteurSociete
-     *
-     * @param \TimeProjectBundle\Entity\SecteurSociete $idsecteurSociete
-     *
-     * @return Societe
-     */
-    public function setIdsecteurSociete(\TimeProjectBundle\Entity\SecteurSociete $idsecteurSociete = null)
-    {
-        $this->idsecteurSociete = $idsecteurSociete;
-
-        return $this;
-    }
-
-    /**
-     * Get idsecteurSociete
-     *
-     * @return \TimeProjectBundle\Entity\SecteurSociete
-     */
-    public function getIdsecteurSociete()
-    {
-        return $this->idsecteurSociete;
-    }
-
-    /**
      * Set idadresse
      *
      * @param \TimeProjectBundle\Entity\Adresse $idadresse
@@ -319,5 +295,29 @@ class Societe
     public function getIdadresse()
     {
         return $this->idadresse;
+    }
+
+    /**
+     * Set idsecteurSociete
+     *
+     * @param \TimeProjectBundle\Entity\SecteurSociete $idsecteurSociete
+     *
+     * @return Societe
+     */
+    public function setIdsecteurSociete(\TimeProjectBundle\Entity\SecteurSociete $idsecteurSociete = null)
+    {
+        $this->idsecteurSociete = $idsecteurSociete;
+
+        return $this;
+    }
+
+    /**
+     * Get idsecteurSociete
+     *
+     * @return \TimeProjectBundle\Entity\SecteurSociete
+     */
+    public function getIdsecteurSociete()
+    {
+        return $this->idsecteurSociete;
     }
 }

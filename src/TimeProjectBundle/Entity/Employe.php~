@@ -22,6 +22,16 @@ class Employe
     private $idemploye;
 
     /**
+     * @var \User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idUser", referencedColumnName="id")
+     * })
+     */
+    private $iduser;
+
+    /**
      * @var \Societe
      *
      * @ORM\ManyToOne(targetEntity="Societe")
@@ -30,16 +40,6 @@ class Employe
      * })
      */
     private $idsociete;
-
-    /**
-     * @var \Users
-     *
-     * @ORM\ManyToOne(targetEntity="Users")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idUser", referencedColumnName="idUser")
-     * })
-     */
-    private $iduser;
 
 
 }

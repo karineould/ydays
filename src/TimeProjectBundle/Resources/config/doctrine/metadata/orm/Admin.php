@@ -22,16 +22,6 @@ class Admin
     private $idadmin;
 
     /**
-     * @var \User
-     *
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idUser", referencedColumnName="id")
-     * })
-     */
-    private $iduser;
-
-    /**
      * @var \Societe
      *
      * @ORM\ManyToOne(targetEntity="Societe")
@@ -40,6 +30,16 @@ class Admin
      * })
      */
     private $idsociete;
+
+    /**
+     * @var \User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idUser", referencedColumnName="id")
+     * })
+     */
+    private $iduser;
 
 
 }

@@ -74,16 +74,6 @@ class Societe
     private $idadmin;
 
     /**
-     * @var \SecteurSociete
-     *
-     * @ORM\ManyToOne(targetEntity="SecteurSociete")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idSecteur_societe", referencedColumnName="idSecteur_societe")
-     * })
-     */
-    private $idsecteurSociete;
-
-    /**
      * @var \Adresse
      *
      * @ORM\ManyToOne(targetEntity="Adresse")
@@ -92,6 +82,16 @@ class Societe
      * })
      */
     private $idadresse;
+
+    /**
+     * @var \SecteurSociete
+     *
+     * @ORM\ManyToOne(targetEntity="SecteurSociete")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idSecteur_societe", referencedColumnName="idSecteur_societe")
+     * })
+     */
+    private $idsecteurSociete;
 
 
 }
