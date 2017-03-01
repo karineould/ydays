@@ -2,6 +2,14 @@ time_project_homepage:
     path:     /
     defaults: { _controller: TimeProjectBundle:Default:index }
 
-createSociety:
-    path: /createSociety
-    defaults: { _controller: TimeProjectBundle:Default:createSociety }
+create_user:
+    path: /create_user
+    defaults: { _controller: TimeProjectBundle:Default:createUser }
+
+get_all_users:
+    path: /get_all_users
+    defaults : { _controller: TimeProjectBundle:Default:getAllUsers }
+
+manage_user:
+    path: /manage_user
+    defaults : { _controller: TimeProjectBundle:Default:manageUser }
