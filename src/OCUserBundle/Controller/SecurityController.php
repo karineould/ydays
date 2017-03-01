@@ -118,14 +118,14 @@ class SecurityController extends Controller
         }
 
 
-        // on ajoute l'utilisateur qui vient de s'inscrire dans la table admin
-        $admin = new Admin();
-        $admin->setIdUser( $this->getDoctrine()
-                                ->getRepository('TimeProjectBundle:User')
-                                ->find($user->getId()));
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($admin);
-        $em->flush();
+//        // on ajoute l'utilisateur qui vient de s'inscrire dans la table admin
+//        $admin = new Admin();
+//        $admin->setIdUser( $this->getDoctrine()
+//                                ->getRepository('TimeProjectBundle:User')
+//                                ->find($user->getId()));
+//        $em = $this->getDoctrine()->getManager();
+//        $em->persist($admin);
+//        $em->flush();
 
         return $this->render('@FOSUser/Registration/check_email.html.twig', array(
             'user' => $user,
