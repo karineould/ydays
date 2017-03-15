@@ -22,15 +22,15 @@
     <h2>Menu</h2>
     <br/>
     <ul>
-        <li><a href="{{ path('time_project_homepage') }}">Accueil</a></li>
+        <li><a style="text-decoration: none" href="{{ path('time_project_homepage') }}">Accueil</a></li>
         {% if is_granted('ROLE_ADMIN') %}
-            <li><a href="{{ path('create_user') }}">Gestion des utilisateurs</a></li>
+            <li><a style="text-decoration: none" href="{{ path('create_user') }}">Gestion des utilisateurs</a></li>
         {% endif %}
         <br>
         <form action="{{ path('logout') }}" method="get">
-            <il class="actions">
+            <li class="actions">
                 <input type="submit" value="Déconnexion" class="special" />
-            </il>
+            </li>
         </form>
     </ul>
 </nav>
