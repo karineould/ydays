@@ -9,16 +9,29 @@
         <title>{% block title %}TimeProject{% endblock %}</title>
 
 
-        {% block stylesheets %} {% endblock %}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('bundles/assets/css/home.css') }}" />
+            <link rel="stylesheet" href="{{ asset('bundles/assets/css/custumhome.css') }}" />
+            <link rel="stylesheet" type="text/css" href="{{ asset('bundles/assets/css/lib/bootstrap.min.css') }}"/>
+        {% endblock %}
 
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
 
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}
+
+        {% endblock %}
+
         {% block javascripts %}
-            {#<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>#}
             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+            {#<script src="{{ asset('bundles/assets/js/lib/jquery.min.js') }}"></script>#}
+            <script src="{{ asset('bundles/assets/js/lib/jquery.scrollex.min.js') }}"></script>
+            <script src="{{ asset('bundles/assets/js/lib/jquery.scrolly.min.js') }}"></script>
+            <script src="{{ asset('bundles/assets/js/lib/skel.min.js') }}"></script>
+            <script src="{{ asset('bundles/assets/js/lib/bootstrap.min.js') }}"></script>
+            <script src="{{ asset('bundles/assets/js/util.js') }}"></script>
+            <script src="{{ asset('bundles/assets/js/home.js') }}"></script>
         {% endblock %}
     </body>
 

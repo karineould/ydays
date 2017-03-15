@@ -13,3 +13,7 @@ get_all_users:
 manage_user:
     path: /manage_user
     defaults : { _controller: TimeProjectBundle:Default:manageUser }
+
+project_calendar:
+    path: /project_calendar/projet-{project_id}
+    defaults: { _controller: TimeProjectBundle:Default:getProjectCalendar }
