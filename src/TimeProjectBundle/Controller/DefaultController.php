@@ -45,8 +45,15 @@ class DefaultController extends Controller
         $arrayUsers = null;
         foreach ( $allUsers as $key => $user ){
             $arrayUsers['data'][$key]['DT_RowId'] = 'row_'.$user->getId();
+            $arrayUsers['data'][$key]['id'] = $user->getId();
             $arrayUsers['data'][$key]['username'] = $user->getUsername();
             $arrayUsers['data'][$key]['email'] = $user->getEmail();
+            dump($user->getRoles());
+            foreach($user->getRoles() as $role){
+                $role = ($role == 'ROLE_ADMIN' ? 'ADMIN' : 'UTILISATEUR');
+            }
+
+            $arrayUsers['data'][$key]['role'] = $role;
         }
         $response = new Response(json_encode($arrayUsers));
         $response->headers->set('Content-Type', 'application/json');
@@ -55,37 +62,68 @@ class DefaultController extends Controller
     }
 
     public function manageUserAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $data = null;
+
+        foreach($request->get('data') as $data){
+            $data = $data;
+        }
+        $role = ($data['role'] == 'ADMIN' ? 'ROLE_ADMIN' : 'ROLE_USER');
         $action = $request->get('action');
         if ( $action == 'create' ){
             $user = new User();
             $user->setUsername($request->get('data')[0]['username']);
             $user->setEmail($request->get('data')[0]['email']);
-            $user->setPassword('azerty');
             $user->setUsernameCanonical($request->get('data')[0]['username']);
             $user->setEmailCanonical($request->get('data')[0]['email']);
-            $user->setRoles(['ROLE_USER']);
+            $user->setRoles([$role]);
+
+            // a revoir
+            $user->setPassword('azerty');
             $user->setSalt('azertyuiokjhgdsdfghjkjhgfd');
             $user->setEnabled(true);
 
-            $em = $this->getDoctrine()->getManager();
             $em->persist($user);
-            $em->flush();
 
         } else if ( $action == 'edit' ){
+            $user = $this->getDoctrine()
+                ->getRepository('TimeProjectBundle:User')
+                ->find($data['id']);
+            $user->setUsername($data['username']);
+            $user->setEmail($data['email']);
+            $user->setUsernameCanonical($data['username']);
+            $user->setEmailCanonical($data['email']);
+            $user->setRoles([$role]);
+            $em->persist($user);
 
         } else {
+            $user = $this->getDoctrine()
+                ->getRepository('TimeProjectBundle:User')
+                ->find($data['id']);
+            $em->remove($user);
+        }
 
+        $em->flush();
+
+        foreach($user->getRoles() as $role){
+            $role = ($role == 'ROLE_ADMIN' ? 'ADMIN' : 'UTILISATEUR');
         }
 
         $data['data'][] = [
             'DT_RowId' => 'row_'.$user->getId(),
+            'id' => $user->getId(),
             'username' => $user->getUsername(),
-            'email' => $user->getEmail()
+            'email' => $user->getEmail(),
+            'role' => $role,
         ];
 
         $response = new Response(json_encode($data));
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
+    }
+
+    public function getProjectCalendarAction($project_id){
+        return $this->render('TimeProjectBundle:Default:project-calendar.html.twig');
     }
 }

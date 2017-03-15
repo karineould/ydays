@@ -18,6 +18,10 @@ logout:
 #fos_user_security_check:
 #    path:   /login_check
 
+change_password:
+    path: /profile/change-password
+    defaults: { _controller: OCUserBundle:ChangePassword:changePassword }
+
 fos_user_security:
     resource:  "@FOSUserBundle/Resources/config/routing/security.xml"
 
@@ -30,7 +34,7 @@ fos_user_registration_register:
     prefix:  /register
 
 fos_user_resetting:
-    resource:  "@FOSUserBundle/Resources/config/routing/resetting.xml"
+    resource:  "@OCUserBundle/Resources/config/routing/resetting.xml"
     prefix:  /resetting
 
 fos_user_change_password:

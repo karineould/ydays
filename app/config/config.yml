@@ -78,6 +78,9 @@ fos_user:
     firewall_name: main
     user_class:    OCUserBundle\Entity\User
 
+#    change_password:
+#        form:
+#            type: fos_user_change_password
     registration:
         confirmation:
             enabled:    true
