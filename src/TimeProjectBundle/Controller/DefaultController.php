@@ -3,6 +3,7 @@
 namespace TimeProjectBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use TimeProjectBundle\Entity\User;
@@ -18,6 +19,9 @@ class DefaultController extends Controller
 
         // récupération de l'utilisateur connecté ---> $user = $this->getUser();
         $user = $this->getUser();
+        if (empty($user->getLastLogin())){
+            return $this->redirectToRoute('/profile/change-password');
+        }
         if($user){
             $admin = $this->getDoctrine()
                             ->getRepository('TimeProjectBundle:Admin')
@@ -77,13 +81,44 @@ class DefaultController extends Controller
             $user->setUsernameCanonical($request->get('data')[0]['username']);
             $user->setEmailCanonical($request->get('data')[0]['email']);
             $user->setRoles([$role]);
-
+            $token = random_bytes(10);
+            $user->setConfirmationToken($token);
             // a revoir
             $user->setPassword('azerty');
             $user->setSalt('azertyuiokjhgdsdfghjkjhgfd');
             $user->setEnabled(true);
 
             $em->persist($user);
+
+            $url = $this->get('router')->generate('fos_user_registration_confirm', array('token' => $user->getConfirmationToken()), UrlGeneratorInterface::ABSOLUTE_URL);
+
+            $message = \Swift_Message::newInstance()
+                                     ->setSubject('Bienvenu '.$user->getUsername())
+                                     ->setFrom('contact.timeproject@gmail.com')
+                                     ->setTo($user->getEmail())
+                                     ->setBody(
+                                         $this->renderView(
+                                             'TimeProjectBundle:Email:confirmEmail.html.twig',
+                                             ['user' => $user->getUsername(),
+                                              'email'=>$user->getEmail(),
+                                              'password' => $user->getPassword(),
+                                              'url' => $url
+                                             ]
+                                         ),
+                                         'text/html'
+                                     )
+                /*
+                 * If you also want to include a plaintext version of the message
+                ->addPart(
+                    $this->renderView(
+                        'Emails/registration.txt.twig',
+                        array('name' => $name)
+                    ),
+                    'text/plain'
+                )
+                */
+            ;
+            $this->get('mailer')->send($message);
 
         } else if ( $action == 'edit' ){
             $user = $this->getDoctrine()
