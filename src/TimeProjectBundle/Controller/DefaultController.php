@@ -18,6 +18,10 @@ class DefaultController extends Controller
 //        $test = $em->getRepository('OCUserBundle:User')->findExempleJan();
 //        dump($test[0]->getUsername());
 
+
+
+        dump($projets);
+
         // récupération de l'utilisateur connecté ---> $user = $this->getUser();
         $user = $this->getUser();
         if (empty($user->getLastLogin())){
@@ -25,9 +29,16 @@ class DefaultController extends Controller
         }
         if($user){
 
-            dump($user->getRoles());
-            if($user->getRoles())
-            return $this->render('TimeProjectBundle:Default:index.html.twig', ['projet' => []]);
+            if($user->getRoles()[0] == 'ROLE_ADMIN'){
+                $projets = $this->getDoctrine()
+                    ->getRepository('TimeProjectBundle:Projet')
+                    ->findAll();
+            } else {
+                $projets = $this->getDoctrine()
+                    ->getRepository('TimeProjectBundle:Projet')
+                    ->find
+            }
+            return $this->render('TimeProjectBundle:Default:index.html.twig', ['projets' => $projets]);
         } else {
             return $this->redirectToRoute('login');
         }

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * TacheParUser
  *
- * @ORM\Table(name="tache_par_user", indexes={@ORM\Index(name="fk_user_id", columns={"fk_user"}), @ORM\Index(name="fk_tache_id", columns={"fk_tache"})})
+ * @ORM\Table(name="tache_par_user", indexes={@ORM\Index(name="fk_user_id", columns={"fk_user"}), @ORM\Index(name="fk_tache_id", columns={"fk_tache"}), @ORM\Index(name="fk_projet_id", columns={"fk_projet"})})
  * @ORM\Entity
  */
 class TacheParUser
@@ -27,6 +27,16 @@ class TacheParUser
      * @ORM\Column(name="duree", type="integer", nullable=true)
      */
     private $duree;
+
+    /**
+     * @var \Projet
+     *
+     * @ORM\ManyToOne(targetEntity="Projet")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_projet", referencedColumnName="id")
+     * })
+     */
+    private $fkProjet;
 
     /**
      * @var \Tache

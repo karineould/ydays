@@ -28,8 +28,8 @@
                 {#</section>#}
                 {#<input type="text" class="form-control datepicker" name="fname"><br>#}
                 <section class="tiles">
-                    {% if missions|length == 0 %}
-                    <article class="style1">
+
+                    <article class="style0">
 									<span class="image">
 										<img src="{{ asset('bundles/images/img01.jpg') }}" alt="" />
 									</span>
@@ -40,7 +40,21 @@
                             </div>
                         </a>
                     </article>
-                    {% else %} {% endif %}
+                    {% for projet in projets %}
+
+                        <article class="style{{random(5)}}">
+									<span class="image">
+										<img src="{{ asset('bundles/images/img01.jpg') }}" alt="" />
+									</span>
+                            <a id="" >
+                                <h2>{{ projet.nom }}</h2>
+                                <div class="content">
+                                    <p>{{ projet.dateDebut|date('d/m/Y') }} au {{ projet.dateFin|date('d/m/Y') }}</p>
+                                </div>
+                            </a>
+                        </article>
+
+                    {% endfor %}
 
                 </section>
             </div>
@@ -97,11 +111,12 @@
                 return false;
             });
 
-            $('#createProject').on('click', function(){
-                $('#nomProjet').text('');
-                $('#debutProjet').text('');
-                $('#finProjet').text('');
-            });
+//            $('#createProject').on('click', function(){
+//                alert('lol');
+//                $('#nomProjet').value = '';
+//                $('#debutProjet').text('');
+//                $('#finProjet').text('');
+//            });
 
             $('#submitCreateProjet').on('click', function(e){
                 nomProjet = $('#nomProjet').val();
@@ -154,6 +169,7 @@
                                     type: 'success'
 
                                 });
+                                location.reload();
                             },
                             error : function(resultat, statut, erreur){
                                 $.notify({
@@ -168,6 +184,7 @@
                             }
 
                         });
+
                     }
 
                 }
