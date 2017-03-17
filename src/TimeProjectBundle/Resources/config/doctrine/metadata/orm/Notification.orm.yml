@@ -1,0 +1,78 @@
+Notification:
+    type: entity
+    table: notification
+    indexes:
+        idSociete_idx:
+            columns:
+                - idAdmin
+    id:
+        idnotification:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: idNotification
+            generator:
+                strategy: IDENTITY
+    fields:
+        intituleTitre:
+            type: string
+            nullable: true
+            length: 45
+            options:
+                fixed: false
+            column: intitule_titre
+        contenu:
+            type: string
+            nullable: true
+            length: 45
+            options:
+                fixed: false
+        isvalidation:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            column: isValidation
+        iddate:
+            type: string
+            nullable: true
+            length: 45
+            options:
+                fixed: false
+            column: idDate
+        idmission:
+            type: string
+            nullable: true
+            length: 45
+            options:
+                fixed: false
+            column: idMission
+        idcategorieMission:
+            type: string
+            nullable: true
+            length: 45
+            options:
+                fixed: false
+            column: idCategorie_mission
+        idemploye:
+            type: string
+            nullable: true
+            length: 45
+            options:
+                fixed: false
+            column: idEmploye
+        idsociete:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: idSociete
+        idadmin:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: idAdmin
+    lifecycleCallbacks: {  }

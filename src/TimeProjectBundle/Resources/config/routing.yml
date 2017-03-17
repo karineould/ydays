@@ -17,3 +17,7 @@ manage_user:
 project_calendar:
     path: /project_calendar/projet-{project_id}
     defaults: { _controller: TimeProjectBundle:Default:getProjectCalendar }
+
+create_project:
+    path: /create_project
+    defaults: { _controller: TimeProjectBundle:Default:createProject }

@@ -1,0 +1,47 @@
+TacheParUser:
+    type: entity
+    table: tache_par_user
+    indexes:
+        fk_user_id:
+            columns:
+                - fk_user
+        fk_tache_id:
+            columns:
+                - fk_tache
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        duree:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+    manyToOne:
+        fkTache:
+            targetEntity: Tache
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                fk_tache:
+                    referencedColumnName: id
+            orphanRemoval: false
+        fkUser:
+            targetEntity: User
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                fk_user:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

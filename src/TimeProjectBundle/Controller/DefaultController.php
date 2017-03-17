@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use TimeProjectBundle\Entity\User;
+use TimeProjectBundle\Entity\Projet;
 
 
 class DefaultController extends Controller
@@ -19,11 +20,10 @@ class DefaultController extends Controller
         // récupération de l'utilisateur connecté ---> $user = $this->getUser();
         $user = $this->getUser();
         if($user){
-            $admin = $this->getDoctrine()
-                            ->getRepository('TimeProjectBundle:Admin')
-                            ->findOneByIduser(["iduser" => $user->getId()]);
-//            dump($admin);
-            return $this->render('TimeProjectBundle:Default:index.html.twig', ['missions' => []]);
+
+            dump($user->getRoles());
+            if($user->getRoles())
+            return $this->render('TimeProjectBundle:Default:index.html.twig', ['projet' => []]);
         } else {
             return $this->redirectToRoute('login');
         }
@@ -125,5 +125,27 @@ class DefaultController extends Controller
 
     public function getProjectCalendarAction($project_id){
         return $this->render('TimeProjectBundle:Default:project-calendar.html.twig');
+    }
+
+    public function createProjectAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $nomProjet = $request->get('nom');
+        $dateDebut = $request->get('dateDebut');
+        $dateFin = $request->get('dateFin');
+
+        $projet = new Projet();
+        $projet->setNom($nomProjet);
+//        $projet->setDateDebut(\DateTime::createFromFormat('dd/mm/yyyy', $dateDebut));
+
+        $projet->setDateDebut(new \DateTime($dateDebut));
+        $projet->setDateFin(new \DateTime($dateFin));
+//        $projet->setDateFin(\DateTime::createFromFormat('dd/mm/yyyy', $dateFin));
+
+        $em->persist($projet);
+        $em->flush();
+
+        $response = new Response('Le projet a bien été créé');
+        $response->headers->set('Content-Type', 'text/html');
+        return $response;
     }
 }

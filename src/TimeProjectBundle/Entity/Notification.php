@@ -78,12 +78,9 @@ class Notification
     private $idsociete;
 
     /**
-     * @var \Admin
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="Admin")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idAdmin", referencedColumnName="idAdmin")
-     * })
+     * @ORM\Column(name="idAdmin", type="integer", nullable=true)
      */
     private $idadmin;
 
@@ -294,11 +291,11 @@ class Notification
     /**
      * Set idadmin
      *
-     * @param \TimeProjectBundle\Entity\Admin $idadmin
+     * @param integer $idadmin
      *
      * @return Notification
      */
-    public function setIdadmin(\TimeProjectBundle\Entity\Admin $idadmin = null)
+    public function setIdadmin($idadmin)
     {
         $this->idadmin = $idadmin;
 
@@ -308,7 +305,7 @@ class Notification
     /**
      * Get idadmin
      *
-     * @return \TimeProjectBundle\Entity\Admin
+     * @return integer
      */
     public function getIdadmin()
     {
