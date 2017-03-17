@@ -5,6 +5,8 @@
 
 {% block stylesheets %}
     {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/assets/css/lib/datepicker.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/assets/css/lib/animate.min.css') }}" />
 {% endblock %}
 
 
@@ -21,13 +23,17 @@
                     <h1>Projet de {{ app.user.username }}</h1>
                 </header>
 
+                {#<section>#}
+                    {#<button data-toggle="modal" data-target="#createProjetModal">Créer un nouveau projet</button>#}
+                {#</section>#}
+                {#<input type="text" class="form-control datepicker" name="fname"><br>#}
                 <section class="tiles">
                     {% if missions|length == 0 %}
                     <article class="style1">
 									<span class="image">
 										<img src="{{ asset('bundles/images/img01.jpg') }}" alt="" />
 									</span>
-                        <a href="{{ path('project_calendar', { 'project_id': 1 }) }}">
+                        <a id="createProject" data-toggle="modal" data-target="#createProjetModal">
                             <h2><img src="{{ asset('bundles/images/iconePlus2.png') }}" alt="" /></h2>
                             <div class="content">
                                 <p>Créer un Nouveau Projet</p>
@@ -41,8 +47,144 @@
         </div>
     </div>
 
+    <div class="modal fade" id="createProjetModal" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Création d'un nouveau projet</h5>
+                    {#<button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+                        {#<span aria-hidden="true">&times;</span>#}
+                    {#</button>#}
+                </div>
+                <div class="modal-body">
+                    <div id="input-group">
+                        <div class="form-group" id="div-nomProjet">
+                            Intitulé du projet  <input type="text" id="nomProjet" class="form-control"><br>
+                        </div>
+                        <div class="form-group" id="div-debutProjet">
+                            Date de début  <input type="text" class="datepicker form-control" id="debutProjet"/><br>
+                        </div>
+                        <div class="form-group" id="div-finProjet">
+                            Date de fin  <input type="text" class="datepicker form-control" id="finProjet"/><br>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="submitCreateProjet" class="button special">Enregistrer</button>
+                    <button type="button" class="button" data-dismiss="modal">Annuler</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="{{ asset('bundles/assets/js/lib/datepicker.min.js') }}"></script>
+    <script src="{{ asset('bundles/assets/js/lib/bootstrap-notify.js') }}"></script>
+    <script type="text/javascript">
+        var nomProjet, dateDebut, dateFin;
+        $(document).ready(function() {
+            $('.datepicker').datepicker({
+                format: 'dd/mm/yyyy',
+                startDate: '-3d',
+                zIndex: 9999,
+//                lang: 'fr',
+            });
+
+            $('.datepicker').on('keydown', function(){
+                return false;
+            });
+
+            $('#createProject').on('click', function(){
+                $('#nomProjet').text('');
+                $('#debutProjet').text('');
+                $('#finProjet').text('');
+            });
+
+            $('#submitCreateProjet').on('click', function(e){
+                nomProjet = $('#nomProjet').val();
+                dateDebut = $('#debutProjet').val();
+                dateFin = $('#finProjet').val();
+                if( nomProjet == ''){
+                    $('#div-nomProjet').addClass('has-error');
+                } else {
+                    $('#div-nomProjet').removeClass('has-error');
+                }
+
+                if( dateDebut == ''){
+                    $('#div-debutProjet').addClass('has-error');
+                } else {
+                    $('#div-debutProjet').removeClass('has-error');
+                }
+
+                if( dateFin == ''){
+                    $('#div-finProjet').addClass('has-error');
+                } else {
+                    $('#div-finProjet').removeClass('has-error');
+                }
+
+
+
+                if( nomProjet != '' && dateDebut != '' && dateFin != ''){
+                    // il faut que la date de début précède la date de fin dans le temps
+                    if(dateDebut.split("/").join("") >= dateFin.split("/").join("")){
+                        $('#div-debutProjet').addClass('has-error');
+                        $('#div-finProjet').addClass('has-error');
+                    } else{
+                        $('#div-debutProjet').removeClass('has-error');
+                        $('#div-finProjet').removeClass('has-error');
+                        $('#createProjetModal').modal('toggle');
+                        $.ajax({
+                            url : "{{ path('create_project') }}",
+                            type : 'POST',
+                            data: {
+                                'nom': nomProjet,
+                                'dateDebut': dateDebut.split("/").join("-"),
+                                'dateFin': dateFin.split("/").join("-")
+                            },
+                            dataType : 'html',
+                            success : function(message){
+                                $.notify({
+                                    icon: "pe-7s-gift",
+                                    message: message,
+                                },{
+                                    timer: 3000,
+                                    type: 'success'
+
+                                });
+                            },
+                            error : function(resultat, statut, erreur){
+                                $.notify({
+                                    icon: "pe-7s-times",
+                                    message: "Erreur lors de la création du projet"
+                                },{
+                                    timer: 3000,
+                                    type: 'danger'
+
+                                });
+
+                            }
+
+                        });
+                    }
+
+                }
+            });
+
+            $('#input-group input').on('input', function(){
+                nomProjet = $('#nomProjet').val();
+                dateDebut = $('#debutProjet').val();
+                dateFin = $('#finProjet').val();
+                if( nomProjet == ''){
+                    $('#div-nomProjet').addClass('has-error');
+                } else {
+                    $('#div-nomProjet').removeClass('has-error');
+                }
+
+            })
+
+        });
+    </script>
 {% endblock %}

@@ -1,0 +1,50 @@
+Tache:
+    type: entity
+    table: tache
+    indexes:
+        fk_projet:
+            columns:
+                - fk_projet
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        nom:
+            type: string
+            nullable: false
+            length: 100
+            options:
+                fixed: false
+        dateDebut:
+            type: date
+            nullable: false
+            column: date_debut
+        dateFin:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            column: date_fin
+        priorite:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+    manyToOne:
+        fkProjet:
+            targetEntity: Projet
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                fk_projet:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

@@ -1,0 +1,32 @@
+Phinxlog:
+    type: entity
+    table: phinxlog
+    id:
+        version:
+            type: bigint
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        migrationName:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+            column: migration_name
+        startTime:
+            type: datetime
+            nullable: false
+            column: start_time
+        endTime:
+            type: datetime
+            nullable: false
+            column: end_time
+        breakpoint:
+            type: boolean
+            nullable: false
+    lifecycleCallbacks: {  }

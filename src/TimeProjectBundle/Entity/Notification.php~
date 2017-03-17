@@ -78,12 +78,9 @@ class Notification
     private $idsociete;
 
     /**
-     * @var \Admin
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="Admin")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idAdmin", referencedColumnName="idAdmin")
-     * })
+     * @ORM\Column(name="idAdmin", type="integer", nullable=true)
      */
     private $idadmin;
 
