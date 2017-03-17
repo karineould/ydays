@@ -14,16 +14,14 @@ class DefaultController extends Controller
 {
     public function indexAction(Request $request)
     {
+        $user = $this->getUser();
 //        $em = $this->getDoctrine()->getManager();
 //        $test = $em->getRepository('OCUserBundle:User')->findExempleJan();
 //        dump($test[0]->getUsername());
 
 
-
-        dump($projets);
-
         // récupération de l'utilisateur connecté ---> $user = $this->getUser();
-        $user = $this->getUser();
+
         if (empty($user->getLastLogin())){
             return $this->redirectToRoute('/profile/change-password');
         }
@@ -34,9 +32,19 @@ class DefaultController extends Controller
                     ->getRepository('TimeProjectBundle:Projet')
                     ->findAll();
             } else {
-                $projets = $this->getDoctrine()
-                    ->getRepository('TimeProjectBundle:Projet')
-                    ->find
+                $em = $this->getDoctrine()->getManager();
+                $query = $em->createQueryBuilder('p')
+                            ->select('p')
+                            ->from('TimeProjectBundle:Projet','p')
+                            ->from('TimeProjectBundle:TacheParUser','tu')
+                            ->where('tu.fkUser = :userid')
+                            ->setParameter('userid', $user->getId())
+                            ->andWhere('tu.fkProjet = p.id')
+                            ->groupBy('tu.fkProjet')
+                            ->getQuery();
+
+                $projets = $query->getResult();
+                dump($projets);
             }
             return $this->render('TimeProjectBundle:Default:index.html.twig', ['projets' => $projets]);
         } else {
