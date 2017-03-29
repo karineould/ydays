@@ -1,12 +1,13 @@
 {# src/TimeProjectBundle/Resources/views/Default/project-calendar.html.twig #}
 {% extends 'TimeProjectBundle::layout.html.twig' %}
 
-{% block title %}{{ parent() }} - Home {% endblock %}
+{% block title %}{{ parent() }} - Projet {% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" type="text/css" href="{{ asset('bundles/assets/css/fullcalendar/fullcalendar.css') }}"/>
-{% endblock %}
+    <link rel="stylesheet" href="{{ asset('bundles/assets/css/lib/datepicker.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/assets/css/lib/animate.min.css') }}" />{% endblock %}
 
 
 {% block body %}
@@ -19,10 +20,88 @@
         <div id="main">
             <div class="inner">
                 <header>
-                    <h1>Projet de {{ app.user.username }}</h1>
+                    <h1>{{ projet.nom|upper }}</h1>
                 </header>
-
+                <br/>
+                {% if is_granted('ROLE_ADMIN') == true %}
+                    <button id="createTache" data-toggle="modal" data-target="#createTacheModal">Ajouter une tâche</button>
+                    <br/>
+                {% endif %}
+                <br/>
                 <div id='calendar'></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="createTacheModal" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Création d'une nouvelle tâche</h5>
+                </div>
+                <div class="modal-body">
+                    <div id="input-group">
+                        <div class="form-group" id="div-nomTache">
+                            Nom de la tâche  <input type="text" id="nomTache" class="form-control"
+                                                    placeholder="Entrez le nom"><br>
+                        </div>
+                        <div class="form-group" id="div-debutTache">
+                            Date de début  <input type="text" class="datepicker form-control" id="debutTache"
+                                                  placeholder="Sélectionnez une date"/><br>
+                        </div>
+                        <div class="form-group" id="div-finTache">
+                            Date de fin  <input type="text" class="datepicker form-control" id="finTache"
+                                                placeholder="Sélectionnez une date"//><br>
+                        </div>
+                        <div class="form-group" id="div-finTache">
+                            Priorité
+                            <select type="text" class="form-control" id="prioriteTache">
+                                <option value="1" selected>Faible</option>
+                                <option value="2">Moyenne</option>
+                                <option value="3">Forte</option>
+                            </select><br>
+                        </div>
+                        {% if is_granted('ROLE_ADMIN') == true %}
+                            <div class="form-group" id="div-usersTache">
+                                Personnes affectées à la tâche
+                                &nbsp;      <a id="addUserToTache"><i class="fa fa-2x fa-plus-square-o"></i></a>
+                                <br/>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Utilisateur</th>
+                                            <th>Durée</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="usersToTache">
+                                        <tr class="addUserToTacheRow">
+                                            <td>
+                                                <select type="text" class="userSelectedToTache">
+                                                    <option value="">Sélectionnez un utilisateur</option>
+                                                    {% for user in allUsers %}
+                                                        <option value="{{ user.id }}">{{ user.username|upper }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input type="number" min="1" class="form-control dureeTache"
+                                                       placeholder="Durée de la tâche en heures"
+                                                       onkeyup="this.value=this.value.replace(/[^\d]/,'')"/>
+                                            </td>
+                                            <td class="deleteCell"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="submitCreateTache" class="button special">Enregistrer</button>
+                    <button type="button" id="submitEditTache" class="button special">Modifier</button>
+                    <button type="button" class="button" data-dismiss="modal">Fermer</button>
+                </div>
             </div>
         </div>
     </div>
@@ -31,18 +110,263 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" language="javascript" src="{{ asset('bundles/assets/js/moment/min/moment.min.js') }}"></script>
-    <script type="text/javascript" language="javascript" src="{{ asset('bundles/assets/js/fullcalendar/fullcalendar.js') }}"></script>
-    <script type="text/javascript" language="javascript" src="{{ asset('bundles/assets/js/fullcalendar/locale-all.js') }}"></script>
+    <script src="{{ asset('bundles/assets/js/moment/min/moment.min.js') }}"></script>
+    <script src="{{ asset('bundles/assets/js/fullcalendar/fullcalendar.js') }}"></script>
+    <script src="{{ asset('bundles/assets/js/fullcalendar/locale-all.js') }}"></script>
+    <script src="{{ asset('bundles/assets/js/lib/datepicker.min.js') }}"></script>
+    <script src="{{ asset('bundles/assets/js/lib/bootstrap-notify.js') }}"></script>
     <script type="text/javascript" language="javascript">
-        $(document).ready(function() {
+        var nomTache, dateDebut, dateFin, duree, priorite, idTache, usersToTache;
+        var isGrantedAdmin = "{{ is_granted('ROLE_ADMIN') }}";
 
-            // page is now ready, initialize the calendar...
+        $(document).ready(function() {
+            $('.datepicker').datepicker({
+                format: 'dd/mm/yyyy',
+//                startDate: '-3d',
+                zIndex: 9999
+            });
+
+            $('.datepicker, #dureeTache').on('keydown', function(){
+                return false;
+            });
+
+            $('#addUserToTache').on('click', function(){
+                newLine = $('.addUserToTacheRow').clone().appendTo('#usersToTache');
+                newLine.find('.deleteCell').html('<a class="deleteRow"><i class="fa fa-2x fa-times"></i></a>');
+                $('.deleteCell').on('click', function(){
+                    $(this).find('.deleteRow').parent('.deleteCell').parent('tr').remove();
+                });
+            });
+
+
 
             $('#calendar').fullCalendar({
-                locale: 'fr'
-                // put your options and callbacks here
-            })
+                locale: 'fr',
+                eventSources: [
+                    {
+                        url: "{{ path('get_taches', {'projetId':projet.id, 'priorite':1}) }}",
+                        color: 'yellow',    // an option!
+                        textColor: 'black'  // an option!
+                    },
+                    {
+                        url: "{{ path('get_taches', {'projetId':projet.id, 'priorite':2}) }}", // use the `url` property
+                        color: 'orange',    // an option!
+                        textColor: 'black'  // an option!
+                    },
+                    {
+                        url: "{{ path('get_taches', {'projetId':projet.id, 'priorite':3}) }}", // use the `url` property
+                        color: 'red',    // an option!
+                        textColor: 'black'  // an option!
+                    }
+
+                ],
+                eventClick: function(calEvent, jsEvent, view) {
+                    debut = new Date(calEvent.start);
+                    fin = new Date(calEvent.end);
+                    $('#createTacheModal').modal('toggle');
+                    $('#createTacheModal .modal-title').html('Modification de la tache');
+                    nomTache = $('#nomTache').val(calEvent.title);
+                    dateDebut = $('#debutTache').val(calEvent.dateDebut);
+                    dateFin = $('#finTache').val(calEvent.dateFin);
+                    priorite = $('#prioriteTache').val(calEvent.priorite);
+                    $('#submitEditTache').show();
+                    $('#submitCreateTache').hide();
+                    idTache = calEvent.id;
+                    users = calEvent.users;
+                    console.log(users);
+                    users.forEach(function(element, index) {
+                        if(index == 0){
+                            $('#usersToTache').find('.userSelectedToTache').val(element.userid);
+                            $('#usersToTache').find('.dureeTache').val(element.duree);
+                        } else {
+                            newLine = $('.addUserToTacheRow').clone().appendTo('#usersToTache');
+                            newLine.find('.deleteCell').html('<a class="deleteRow"><i class="fa fa-2x fa-times"></i></a>');
+                            $('.deleteCell').on('click', function(){
+                                $(this).find('.deleteRow').parent('.deleteCell').parent('tr').remove();
+                            });
+                            newLine.find('.userSelectedToTache').val(element.userid);
+                            newLine.find('.dureeTache').val(element.duree);
+                        }
+                    });
+                    if(isGrantedAdmin){
+                        $('.datepicker').datepicker({
+                            format: 'dd/mm/yyyy',
+//                           startDate: '-3d',
+                            zIndex: 9999
+                        });
+                        $('#createTacheModal .modal-title').html('Modification de la tache');
+                        $('#createTacheModal #input-group input').attr('readonly', false);
+                        $('#submitEditTache').show();
+                        $('#prioriteTache').attr('disabled', false);
+                    } else {
+                        $('#createTacheModal .modal-title').html('Détails de la tache');
+                        $('.datepicker').datepicker("destroy");
+                        $('#createTacheModal #input-group input').attr('readonly', true);
+                        $('#submitEditTache').hide();
+                        $('#prioriteTache').attr('disabled', true);
+                    }
+                }
+
+            });
+
+            $('#createTache').on('click', function(){
+                $('#createTacheModal .modal-title').html("Création d'une nouvelle tâche");
+                nomTache = $('#nomTache').val('');
+                dateDebut = $('#debutTache').val('');
+                dateFin = $('#finTache').val('');
+                priorite = $('#prioriteTache').val('1');
+                $('#submitEditTache').hide();
+                $('#submitCreateTache').show();
+
+                $('#usersToTache tr').each(function(index) {
+                    if(index != 0){
+                        $(this).remove()
+                    } else {
+                        $(this).find('.userSelectedToTache').val('');
+                        $(this).find('.dureeTache').val('')
+                    }
+                });
+            });
+
+            $('#submitCreateTache, #submitEditTache').on('click', function(e){
+                nomTache = $('#nomTache').val();
+                dateDebut = $('#debutTache').val();
+                dateFin = $('#finTache').val();
+                priorite = $('#prioriteTache').val();
+                if( nomTache == ''){
+                    $('#div-nomTache').addClass('has-error');
+                } else {
+                    $('#div-nomTache').removeClass('has-error');
+                }
+
+                if( dateDebut == ''){
+                    $('#div-debutTache').addClass('has-error');
+                } else {
+                    $('#div-debutTache').removeClass('has-error');
+                }
+
+                if( dateFin == ''){
+                    $('#div-finTache').addClass('has-error');
+                } else {
+                    $('#div-finTache').removeClass('has-error');
+                }
+
+                usersToTache = [];
+                $('#usersToTache tr').each(function(index) {
+                    userOfTache = $(this).find('.userSelectedToTache').val();
+                    usernameOfTache = $(this).find('.userSelectedToTache option:selected').text();
+                    dureeOfTache = $(this).find('.dureeTache').val();
+                    if(userOfTache != '' && dureeOfTache !='' ){
+                        if(usersToTache.indexOf(userOfTache)<0){
+                            usersToTache.push({
+                                'userId': userOfTache,
+                                'username': usernameOfTache,
+                                'duree': dureeOfTache
+                            });
+                        }
+                    }
+                });
+
+                if( nomTache != '' && dateDebut != '' && dateFin != ''){
+                    $('#div-debutTache').removeClass('has-error');
+                    $('#div-finTache').removeClass('has-error');
+                    $('#createTacheModal').modal('toggle');
+                    if(this.id == 'submitCreateTache') {
+                        $.ajax({
+                            url: "{{ path('create_tache') }}",
+                            type: 'POST',
+                            data: {
+                                'nom': nomTache,
+                                'dateDebut': dateDebut.split("/").join("-"),
+                                'dateFin': dateFin.split("/").join("-"),
+                                'priorite': priorite,
+                                'projetId': "{{ projet.id }}",
+                                'usersToTache': usersToTache
+                            },
+                            dataType: 'html',
+                            success: function (message) {
+                                if (message.indexOf('Erreur') !== -1) {
+                                    $.notify({
+                                        icon: "pe-7s-attention",
+                                        message: message,
+                                    }, {
+                                        timer: 3000,
+                                        type: 'danger'
+
+                                    });
+                                } else {
+                                    $.notify({
+                                        icon: "pe-7s-gift",
+                                        message: message,
+                                    }, {
+                                        timer: 3000,
+                                        type: 'success'
+
+                                    });
+                                    $('#calendar').fullCalendar('refetchEvents');
+                                }
+                            },
+                            error: function (resultat, statut, erreur) {
+                                $.notify({
+                                    icon: "pe-7s-times",
+                                    message: "Erreur lors de la création de la tâche"
+                                }, {
+                                    timer: 3000,
+                                    type: 'danger'
+
+                                });
+                            }
+                        });
+                    } else {
+                        $.ajax({
+                            url: "{{ path('edit_tache') }}",
+                            type: 'POST',
+                            data: {
+                                'nom': nomTache,
+                                'dateDebut': dateDebut.split("/").join("-"),
+                                'dateFin': dateFin.split("/").join("-"),
+                                'priorite': priorite,
+                                'projetId': "{{ projet.id }}",
+                                'tacheId': idTache,
+                                'usersToTache': usersToTache
+                            },
+                            dataType: 'html',
+                            success: function (message) {
+                                if (message.indexOf('Erreur') !== -1) {
+                                    $.notify({
+                                        icon: "pe-7s-attention",
+                                        message: message,
+                                    }, {
+                                        timer: 3000,
+                                        type: 'danger'
+
+                                    });
+                                } else {
+                                    $.notify({
+                                        icon: "pe-7s-gift",
+                                        message: message,
+                                    }, {
+                                        timer: 3000,
+                                        type: 'success'
+
+                                    });
+                                    $('#calendar').fullCalendar('refetchEvents');
+                                }
+                            },
+                            error: function (resultat, statut, erreur) {
+                                $.notify({
+                                    icon: "pe-7s-times",
+                                    message: "Erreur lors de la modification de la tâche"
+                                }, {
+                                    timer: 3000,
+                                    type: 'danger'
+
+                                });
+                            }
+                        });
+                    }
+                }
+            });
 
         });
     </script>

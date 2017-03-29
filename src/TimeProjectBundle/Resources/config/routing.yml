@@ -17,7 +17,28 @@ manage_user:
 project_calendar:
     path: /project_calendar/projet-{project_id}
     defaults: { _controller: TimeProjectBundle:Default:getProjectCalendar }
+    requirements:
+        project_id: '\d+'
 
 create_project:
     path: /create_project
     defaults: { _controller: TimeProjectBundle:Default:createProject }
+
+create_tache:
+    path: /create_tache
+    defaults: { _controller: TimeProjectBundle:Default:createTache }
+
+edit_tache:
+    path: /edit_tache
+    defaults: { _controller: TimeProjectBundle:Default:editTache }
+
+page_introuvable:
+    path: error-404
+    defaults: { _controller: TimeProjectBundle:Default:pageIntrouvable }
+
+get_taches:
+    path: /getTaches/{projetId}/{priorite}
+    defaults: { _controller: TimeProjectBundle:Default:getTaches }
+    requirements:
+        projetId: '\d+'
+        priorite: '\d+'

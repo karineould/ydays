@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * TacheParUser
  *
- * @ORM\Table(name="tache_par_user", indexes={@ORM\Index(name="fk_user_id", columns={"fk_user"}), @ORM\Index(name="fk_tache_id", columns={"fk_tache"}), @ORM\Index(name="fk_projet_id", columns={"fk_projet"})})
+ * @ORM\Table(name="tache_par_user", indexes={@ORM\Index(name="fk_user_id", columns={"fk_user"}), @ORM\Index(name="fk_tache_id", columns={"fk_tache"})})
  * @ORM\Entity
  */
 class TacheParUser
@@ -27,16 +27,6 @@ class TacheParUser
      * @ORM\Column(name="duree", type="integer", nullable=true)
      */
     private $duree;
-
-    /**
-     * @var \Projet
-     *
-     * @ORM\ManyToOne(targetEntity="Projet")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_projet", referencedColumnName="id")
-     * })
-     */
-    private $fkProjet;
 
     /**
      * @var \Tache
@@ -92,30 +82,6 @@ class TacheParUser
     public function getDuree()
     {
         return $this->duree;
-    }
-
-    /**
-     * Set fkProjet
-     *
-     * @param \TimeProjectBundle\Entity\Projet $fkProjet
-     *
-     * @return TacheParUser
-     */
-    public function setFkProjet(\TimeProjectBundle\Entity\Projet $fkProjet = null)
-    {
-        $this->fkProjet = $fkProjet;
-
-        return $this;
-    }
-
-    /**
-     * Get fkProjet
-     *
-     * @return \TimeProjectBundle\Entity\Projet
-     */
-    public function getFkProjet()
-    {
-        return $this->fkProjet;
     }
 
     /**
