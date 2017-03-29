@@ -1,6 +1,10 @@
 Tache:
     type: entity
     table: tache
+    indexes:
+        fk_projet:
+            columns:
+                - fk_projet
     id:
         id:
             type: integer
@@ -22,14 +26,23 @@ Tache:
             nullable: false
             column: date_debut
         dateFin:
-            type: integer
+            type: date
             nullable: false
-            options:
-                unsigned: false
             column: date_fin
         priorite:
             type: integer
             nullable: true
             options:
                 unsigned: false
+    manyToOne:
+        fkProjet:
+            targetEntity: Projet
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                fk_projet:
+                    referencedColumnName: id
+            orphanRemoval: false
     lifecycleCallbacks: {  }

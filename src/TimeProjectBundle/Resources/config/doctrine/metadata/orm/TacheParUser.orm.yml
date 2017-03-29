@@ -8,9 +8,6 @@ TacheParUser:
         fk_tache_id:
             columns:
                 - fk_tache
-        fk_projet_id:
-            columns:
-                - fk_projet
     id:
         id:
             type: integer
@@ -27,16 +24,6 @@ TacheParUser:
             options:
                 unsigned: false
     manyToOne:
-        fkProjet:
-            targetEntity: Projet
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                fk_projet:
-                    referencedColumnName: id
-            orphanRemoval: false
         fkTache:
             targetEntity: Tache
             cascade: {  }

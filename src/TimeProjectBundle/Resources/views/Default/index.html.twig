@@ -20,7 +20,7 @@
         <div id="main">
             <div class="inner">
                 <header>
-                    <h1>Projet de {{ app.user.username }}</h1>
+                    <h1>Liste des projets</h1>
                 </header>
 
                 {#<section>#}
@@ -46,7 +46,7 @@
 									<span class="image">
 										<img src="{{ asset('bundles/images/img01.jpg') }}" alt="" />
 									</span>
-                            <a id="" >
+                            <a id="projet{{ projet.id }}" href="{{ path('project_calendar', {'project_id' : projet.id}) }}" >
                                 <h2>{{ projet.nom }}</h2>
                                 <div class="content">
                                     <p>{{ projet.dateDebut|date('d/m/Y') }} au {{ projet.dateFin|date('d/m/Y') }}</p>
@@ -102,21 +102,13 @@
         $(document).ready(function() {
             $('.datepicker').datepicker({
                 format: 'dd/mm/yyyy',
-                startDate: '-3d',
-                zIndex: 9999,
-//                lang: 'fr',
+//                startDate: '-3d',
+                zIndex: 9999
             });
 
             $('.datepicker').on('keydown', function(){
                 return false;
             });
-
-//            $('#createProject').on('click', function(){
-//                alert('lol');
-//                $('#nomProjet').value = '';
-//                $('#debutProjet').text('');
-//                $('#finProjet').text('');
-//            });
 
             $('#submitCreateProjet').on('click', function(e){
                 nomProjet = $('#nomProjet').val();
@@ -143,24 +135,29 @@
 
 
                 if( nomProjet != '' && dateDebut != '' && dateFin != ''){
-                    // il faut que la date de début précède la date de fin dans le temps
-                    if(dateDebut.split("/").join("") >= dateFin.split("/").join("")){
-                        $('#div-debutProjet').addClass('has-error');
-                        $('#div-finProjet').addClass('has-error');
-                    } else{
-                        $('#div-debutProjet').removeClass('has-error');
-                        $('#div-finProjet').removeClass('has-error');
-                        $('#createProjetModal').modal('toggle');
-                        $.ajax({
-                            url : "{{ path('create_project') }}",
-                            type : 'POST',
-                            data: {
-                                'nom': nomProjet,
-                                'dateDebut': dateDebut.split("/").join("-"),
-                                'dateFin': dateFin.split("/").join("-")
-                            },
-                            dataType : 'html',
-                            success : function(message){
+                    $('#div-debutProjet').removeClass('has-error');
+                    $('#div-finProjet').removeClass('has-error');
+                    $('#createProjetModal').modal('toggle');
+                    $.ajax({
+                        url : "{{ path('create_project') }}",
+                        type : 'POST',
+                        data: {
+                            'nom': nomProjet,
+                            'dateDebut': dateDebut.split("/").join("-"),
+                            'dateFin': dateFin.split("/").join("-")
+                        },
+                        dataType : 'html',
+                        success : function(message){
+                            if(message.indexOf('Erreur') !== -1){
+                                $.notify({
+                                    icon: "pe-7s-attention",
+                                    message: message,
+                                },{
+                                    timer: 3000,
+                                    type: 'danger'
+
+                                });
+                            } else {
                                 $.notify({
                                     icon: "pe-7s-gift",
                                     message: message,
@@ -170,23 +167,19 @@
 
                                 });
                                 location.reload();
-                            },
-                            error : function(resultat, statut, erreur){
-                                $.notify({
-                                    icon: "pe-7s-times",
-                                    message: "Erreur lors de la création du projet"
-                                },{
-                                    timer: 3000,
-                                    type: 'danger'
-
-                                });
-
                             }
+                        },
+                        error : function(resultat, statut, erreur){
+                            $.notify({
+                                icon: "pe-7s-times",
+                                message: "Erreur lors de la création du projet"
+                            },{
+                                timer: 3000,
+                                type: 'danger'
 
-                        });
-
-                    }
-
+                            });
+                        }
+                    });
                 }
             });
 
