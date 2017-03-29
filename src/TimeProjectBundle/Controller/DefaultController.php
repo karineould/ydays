@@ -21,10 +21,11 @@ class DefaultController extends Controller
         $user = $this->getUser();
 
         $em = $this->getDoctrine()->getManager();
-        if (empty($user->getLastLogin())){
-            return $this->redirectToRoute('/profile/change-password');
-        }
+
         if($user){
+            if (empty($user->getLastLogin())){
+                return $this->redirectToRoute('/profile/change-password');
+            }
             if($this->isGranted('ROLE_ADMIN')){
                 $projets = $this->getDoctrine()
                     ->getRepository('TimeProjectBundle:Projet')
