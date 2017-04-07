@@ -1,5 +1,5 @@
 {# src/TimeProjectBundle/Resources/views/Default/project-calendar.html.twig #}
-{% extends 'TimeProjectBundle::layout.html.twig' %}
+{% extends 'TimeProjectBundle::layout_dashboard.html.twig' %}
 
 {% block title %}{{ parent() }} - Projet {% endblock %}
 
@@ -12,12 +12,13 @@
 
 {% block body %}
 
-    <div id="wrapper">
+    {#<div id="wrapper">#}
 
-        {% include 'TimeProjectBundle:Default:nav-menu.html.twig' %}
+        {#{% include 'TimeProjectBundle:Default:nav-menu.html.twig' %}#}
 
         <!-- Main -->
-        <div id="main">
+    <div class="content">
+        <div class="container-fluid">
             <div class="inner">
                 <header>
                     <h1>{{ projet.nom|upper }}</h1>

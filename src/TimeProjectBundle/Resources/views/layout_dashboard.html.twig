@@ -1,0 +1,210 @@
+{# src/TimeProjectBundle/Resources/views/layout_dashboard.html.twig #}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <title>{% block title %}TimeProject{% endblock %}</title>
+
+
+        {% block stylesheets %}
+            <link rel="stylesheet" type="text/css" href="{{ asset('bundles/assets/css/lib/bootstrap.min.css') }}"/>
+            <link rel="stylesheet" type="text/css" href="{{ asset('bundles/assets/css/lib/animate.min.css') }}"/>
+            <link rel="stylesheet" href="{{ asset('bundles/assets/css/light-bootstrap-dashboard.css') }}" />
+            <link rel="stylesheet" href="{{ asset('bundles/assets/css/demo.css') }}" />
+            <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+            <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+            <link href="{{ asset('bundles/assets/css/lib/pe-icon-7-stroke.css')}}" rel="stylesheet" />
+        {% endblock %}
+
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+
+    <body>
+    <div class="wrapper">
+        <div class="sidebar" data-color="purple" data-image="{{ asset('bundles/images/sidebar-5.jpg') }}">
+
+            <!--
+
+                Tip 1: you can change the color of the sidebar using: data-color="blue | azure | green | orange | red | purple"
+                Tip 2: you can also add an image using data-image tag
+
+            -->
+
+            <div class="sidebar-wrapper">
+                <div class="logo">
+                    <a href="dashboard.html" class="simple-text">
+                        Time Project
+                    </a>
+                </div>
+                <ul class="nav">
+                    <li>
+                        <a href="historique.html">
+                            <i class="pe-7s-graph"></i>
+                            <p>Historique Détaillé</p>
+
+                        </a>
+                    </li>
+                    <li>
+                        <a href="listedesplans.html">
+                            <i class="pe-7s-user"></i>
+                            <p>Liste de plans - documents</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="comptes_rendus.html">
+                            <i class="pe-7s-note2"></i>
+                            <p>Comptes Rendus</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="bordereau.html">
+                            <i class="pe-7s-news-paper"></i>
+                            <p>Bordereaux d’envoi</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="suivi_des_validations.html">
+                            <i class="pe-7s-science"></i>
+                            <p>Suivi des validations</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="fiche_de_lancement.html">
+                            <i class="pe-7s-map-marker"></i>
+                            <p>Fiche de lancement</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="suivi_th.html">
+                            <i class="pe-7s-bell"></i>
+                            <p>Suivi TH</p>
+                        </a>
+                    </li>
+                    <li class="active-pro">
+                        <a href="{{ path('time_project_homepage') }}">
+                            <i class="pe-7s-rocket"></i>
+                            <p>Accueil</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="main-panel">
+            <nav class="navbar navbar-default navbar-fixed">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#">Dashboard</a>
+                    </div>
+                    <div class="collapse navbar-collapse">
+                        {#<<ul class="nav navbar-nav navbar-left">
+                            <li>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-dashboard"></i>
+                                    <p class="hidden-lg hidden-md">Dashboard</p>
+                                </a>
+                            </li>
+                            li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-globe"></i>
+                                    <b class="caret hidden-sm hidden-xs"></b>
+                                    <span class="notification hidden-sm hidden-xs">5</span>
+                                    <p class="hidden-lg hidden-md">
+                                        5 Notifications
+                                        <b class="caret"></b>
+                                    </p>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Notification 1</a></li>
+                                    <li><a href="#">Notification 2</a></li>
+                                    <li><a href="#">Notification 3</a></li>
+                                    <li><a href="#">Notification 4</a></li>
+                                    <li><a href="#">Another notification</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <i class="fa fa-search"></i>
+                                    <p class="hidden-lg hidden-md">Search</p>
+                                </a>
+                            </li>#}
+                        </ul>
+
+                        <ul class="nav navbar-nav navbar-right">
+                            {#<li>
+                                <a href="">
+                                    <p>Account</p>
+                                </a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <p>
+                                        Dropdown
+                                        <b class="caret"></b>
+                                    </p>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Action</a></li>
+                                    <li><a href="#">Another action</a></li>
+                                    <li><a href="#">Something</a></li>
+                                    <li><a href="#">Another action</a></li>
+                                    <li><a href="#">Something</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">Separated link</a></li>
+                                </ul>
+                            </li>#}
+                            <li>
+                                <a href="{{ path('logout') }}">
+                                    <p>Déconnexion</p>
+                                </a>
+                            </li>
+                            <li class="separator hidden-lg hidden-md"></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        {% block body %}
+
+        {% endblock %}
+            </div>
+        </div>
+
+        {% block javascripts %}
+            {#<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>#}
+            <script src="{{ asset('bundles/assets/js/lib/jquery-1.10.2.js') }}"></script>
+            <script src="{{ asset('bundles/assets/js/lib/bootstrap.min.js') }}"></script>
+            <script src="{{ asset('bundles/assets/js/lib/bootstrap-checkbox-radio-switch.js') }}"></script>
+            <script src="{{ asset('bundles/assets/js/lib/chartist.min.js') }}"></script>
+            <script src="{{ asset('bundles/assets/js/lib/bootstrap-notify.js') }}"></script>
+            <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+            <script src="{{ asset('bundles/assets/js/light-bootstrap-dashboard.js') }}"></script>
+            <script src="{{ asset('bundles/assets/js/demo.js') }}"></script>
+            <script type="text/javascript">
+                $(document).ready(function(){
+
+                    //demo.initChartist();
+//
+  //                  $.notify({
+    //                    icon: 'pe-7s-gift',
+      //                  message: "Welcome to <b>Light Bootstrap Dashboard</b> - a beautiful freebie for every web developer."
+//
+  //                  },{
+    //                    type: 'info',
+      //                  timer: 4000
+        //            });
+//
+  //              });
+            </script>
+        {% endblock %}
+    </body>
+
+</html>
