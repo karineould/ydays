@@ -4,10 +4,11 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css"/>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css"/>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.2.1/css/select.dataTables.min.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/assets/css/datatable/editor.bootstrap.css') }}"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.1.2/css/buttons.dataTables.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.1.2/css/select.dataTables.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.0.2/css/responsive.dataTables.min.css"/>
 {% endblock %}
 
 {% block body %}
@@ -15,7 +16,7 @@
         {% include 'TimeProjectBundle:Default:nav-menu.html.twig' %}
         <div id="main">
             <div class="inner">
-                <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                <table cellpadding="0" cellspacing="0" border="0" class="dataTable table table-striped" id="example" width="100%">
                     <thead>
                     <tr>
                         <th>Pseudo</th>
@@ -25,125 +26,228 @@
                     </tr>
                     </thead>
 
+                    <tbody id="body_user">
+                        {% for user in users %}
+                            <tr id="user_{{ user[3] }}" data-id="{{ user[3] }}">
+                                <td class="username">{{user[0]}}</td>
+                                <td class="email">{{user[1]}}</td>
+                                <td class="role" >{{user[2]}}</td>
+                                <td class="id">{{user[3]}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+
                 </table>
             </div>
         </div>
     </div>
+
+
+    {#---------------------MODAL------------------- #}
+
+    <div class="modal fade" id="createUserModal" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">USER</h5>
+                </div>
+                <div class="modal-body">
+                    <div id="input-group">
+                        <div class="form-group" id="div-username">
+                            Username  <input type="text" id="username" class="form-control"
+                                             placeholder="Entrez le username"><br>
+                        </div>
+                        <div class="form-group" id="div-email">
+                            Email  <input type="text" class="form-control" id="email"
+                                          placeholder="Entrez l'email"/><br>
+                        </div>
+                        <div class="form-group" id="div-finTache">
+                            Role  <select type="text" id="role">
+                                <option value="">Sélectionnez un rôle</option>
+                                <option value="0">ADMIN</option>
+                                <option value="1">UTILISATEUR</option>
+                            </select><br>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="button" data-dismiss="modal">Fermer</button>
+                    <button type="button" id="" class="button special save submitManageUser">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="deleteUserModal" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Supprimer un utilisateur</h5>
+                </div>
+                <div class="modal-body">
+                    <p id="deleteUser">Êtes vous sure de vouloir supprimer cet utilisateur : <b><span></span></b></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="button" data-dismiss="modal">Fermer</button>
+                    <button type="button" id="" class="button special delete submitManageUser">Supprimer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.js"></script>
-    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/select/1.2.1/js/dataTables.select.min.js"></script>
-    <script type="text/javascript" language="javascript" src="{{ asset('bundles/assets/js/datatable/dataTables.editor.js') }}"></script>
-    <script type="text/javascript" language="javascript" src="{{ asset('bundles/assets/js/datatable/editor.bootstrap.js') }}"></script>
-    {#<script type="text/javascript" language="javascript" src="{{ asset('bundles/assets/js/bootstrap.min.js') }}"></script>#}
-    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
-    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('bundles/assets/js/altEditor/dataTables.altEditor.free.js') }}"></script>
+    <script src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.1.2/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.0.2/js/dataTables.responsive.min.js"></script>
+
     <script type="text/javascript" language="javascript">
-        var editor; // use a global for the submit and return data rendering in the examples
+
 
         $(document).ready(function() {
-            editor = new $.fn.dataTable.Editor( {
-                ajax: "{{ path('manage_user') }}",
-                table: "#example",
-                fields: [
 
-                    {
-                        label: "Pseudo",
-                        name: "username"
-                    },
-                    {
-                        label: "Email",
-                        name: "email"
-                    },
-                    {
-                        label: "Privilège:",
-                        name:  "role",
-                        type:  "select",
-                        options: [
-                            { label: "UTILISATEUR", value: "UTILISATEUR" },
-                            { label: "ADMIN",           value: "ADMIN" }
-                        ]
-                    },
-                    {
-                        label: "Id",
-                        name: "id",
-                        type:  "readonly"
-                    }
-                ],
-                i18n: {
-                    create: {
-                        "button": "CRÉATION",
-                        "submit": "Créer"
-                    },
-                    edit: {
-                        "button": "MODIFIER",
-                        "submit": "Modifier"
-                    },
-                    remove: {
-                        "button": "SUPPRIMER",
-
-                        "submit": "Supprimer"
-                    }
-                }
-            } );
-
-            var table = $('#example').DataTable( {
-//                bFilter: false,
-                lengthChange: false,
-                ajax: "{{ path('get_all_users') }}",
-                search: false,
+            $('#example').DataTable({
                 columns: [
-                    { data: "username"},
-                    { data: "email" },
-                    { data: "role" },
-                    { data: "id"}
-                ],
-                "columnDefs": [
+                    {title: "username"},
+                    {title: "email"},
+                    {title: "role"},
                     {
-                        "targets": [ 3 ],
+                        title: "id",
+                        type: "readonly"
+                    }
+                ],
+                columnDefs: [
+                    {
+                        "targets": [3],
                         "visible": false,
                         "searchable": false
                     }
                 ],
+                dom: 'Bfrtip',        // Needs button container
                 select: true,
-                language:{
-                    "sProcessing":     "Traitement en cours...",
-                        "sSearch":         "Rechercher&nbsp;:",
-                        "sLengthMenu":     "Afficher _MENU_ &eacute;l&eacute;ments",
-                        "sInfo":           "Affichage de l'&eacute;l&eacute;ment _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
-                        "sInfoEmpty":      "Affichage de l'&eacute;l&eacute;ment 0 &agrave; 0 sur 0 &eacute;l&eacute;ment",
-                        "sInfoFiltered":   "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
-                        "sInfoPostFix":    "",
-                        "sLoadingRecords": "Chargement en cours...",
-                        "sZeroRecords":    "Aucun &eacute;l&eacute;ment &agrave; afficher",
-                        "sEmptyTable":     "Aucune donn&eacute;e disponible dans le tableau",
-                        "oPaginate": {
-                            "sFirst":      "Premier",
-                            "sPrevious":   "Pr&eacute;c&eacute;dent",
-                            "sNext":       "Suivant",
-                            "sLast":       "Dernier"
-                        },
+                responsive: true,
+                language: {
+                    "sProcessing": "Traitement en cours...",
+                    "sSearch": "Rechercher&nbsp;:",
+                    "sLengthMenu": "Afficher _MENU_ &eacute;l&eacute;ments",
+                    "sInfo": "Affichage de l'&eacute;l&eacute;ment _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
+                    "sInfoEmpty": "Affichage de l'&eacute;l&eacute;ment 0 &agrave; 0 sur 0 &eacute;l&eacute;ment",
+                    "sInfoFiltered": "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+                    "sInfoPostFix": "",
+                    "sLoadingRecords": "Chargement en cours...",
+                    "sZeroRecords": "Aucun &eacute;l&eacute;ment &agrave; afficher",
+                    "sEmptyTable": "Aucune donn&eacute;e disponible dans le tableau",
+                    "oPaginate": {
+                        "sFirst": "Premier",
+                        "sPrevious": "Pr&eacute;c&eacute;dent",
+                        "sNext": "Suivant",
+                        "sLast": "Dernier"
+                    },
                     "oAria": {
-                    "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
-                            "sSortDescending": ": activer pour trier la colonne par ordre d&eacute;croissant"
+                        "sSortAscending": ": activer pour trier la colonne par ordre croissant",
+                        "sSortDescending": ": activer pour trier la colonne par ordre d&eacute;croissant"
                     }
 
-                }
+                },
+                buttons: [
+                    {
+                        text: 'CRÉATION',
+                        name: 'add'
+                    },
+                    {
+                        extend: 'selected', // Bind to Selected row
+                        text: 'MODIFIER',
+                        name: 'edit'
+                    },
+                    {
+                        extend: 'selected', // Bind to Selected row
+                        text: 'SUPPRIMER',
+                        name: 'delete'      // do not change name
+                    }]
+
+
             });
 
-            // Display the buttons
-            new $.fn.dataTable.Buttons( table, [
-                { extend: "create", editor: editor },
-                { extend: "edit",   editor: editor },
-                { extend: "remove", editor: editor }
-            ] );
+            $('.dt-button').on('click', function(){
+                var modalChoosen = $('#createUserModal');
+                var data = $('#body_user tr.selected');
+                var action;
 
+                if (!$(this).hasClass('disabled')){
 
-            table.buttons().container().prependTo('#main .inner');
-        } );
+                    switch ($(this).find('span').text()){
+                        case 'CRÉATION':
+                            action = 'create';
+                            break;
+                        case 'MODIFIER':
+                            modalChoosen.find('#username').val(data.find('.username').text());
+                            modalChoosen.find('#email').val(data.find('.email').text());
+                            modalChoosen.find('#role').val(data.find('.role').text() == 'ADMIN' ? 0 : 1);
+
+                            action = 'edit';
+                            break;
+                        case 'SUPPRIMER':
+                            modalChoosen = $('#deleteUserModal');
+                            modalChoosen.find('#deleteUser span').html(data.find('.username').text());
+                            action = 'delete';
+                            break;
+                        default:
+                            break;
+                    }
+
+                    modalChoosen.modal('toggle');
+                    modalChoosen.find('.submitManageUser').click(function() {
+                        var inputData;
+                        switch (action){
+                            case 'delete':
+                                inputData = [{ 'id': data.data('id') }];
+                                break;
+                            case 'create':
+                                inputData = [{
+                                    'username' : modalChoosen.find('#username').val(),
+                                    'email' : modalChoosen.find('#email').val(),
+                                    'role' : modalChoosen.find('#role option:selected').text()
+                                }];
+                                break;
+                            default:
+                                inputData = [{
+                                    'id': data.data('id'),
+                                    'username' : modalChoosen.find('#username').val(),
+                                    'email' : modalChoosen.find('#email').val(),
+                                    'role' : modalChoosen.find('#role option:selected').text()
+                                }];
+                                break;
+                        }
+
+                        $.ajax({
+                            url: "{{ path('manage_user') }}",
+                            type: 'POST',
+                            data : {
+                                "action" : action,
+                                "data" :   inputData
+                            },
+                            success: function (res) {
+                                location.reload();
+                            },
+                            error: function (resultat, statut, erreur) {
+                                console.log(erreur);
+                            }
+                        });
+
+                    });
+                }
+
+            });
+        });
     </script>
 {% endblock %}
 

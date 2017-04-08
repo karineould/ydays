@@ -166,9 +166,8 @@ class RegistrationController extends Controller
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
-        return $this->render('@FOSUser/Registration/confirmed.html.twig', array(
+        return $this->render('TimeProjectBundle:Default:confirmed.html.twig', array(
             'user' => $user,
-            'targetUrl' => $this->getTargetUrlFromSession(),
         ));
     }
 

@@ -1,0 +1,24 @@
+{% extends 'TimeProjectBundle::layout.html.twig' %}
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block title %}{{ parent() }} - Inscription {% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/assets/css/login.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/assets/css/custumlogin.css') }}" />
+{% endblock %}
+
+
+{% block body %}
+    <!-- Wrapper -->
+    <div id="wrapper">
+        <!-- Header -->
+        <header id="header" class="alt">
+            <span class="logo"><img src="{{ asset('bundles/images/Global_Engineering2.gif') }}" alt="" /></span>
+            <div id="conect">
+                <p>{{ 'registration.confirmed'|trans({'%username%': user.username}) }}</p>
+                <p><a href="{{ path('change_password') }}" class="button">{{ 'registration.back'|trans }}</a></p>
+            </div>
+        </header>
+    </div>
+{% endblock %}

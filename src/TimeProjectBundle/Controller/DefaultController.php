@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use TimeProjectBundle\Entity\User;
+use OCUserBundle\Entity\User;
 use TimeProjectBundle\Entity\Projet;
 use TimeProjectBundle\Entity\Tache;
 use TimeProjectBundle\Entity\TacheParUser;
@@ -19,7 +19,6 @@ class DefaultController extends Controller
     {
         // récupération de l'utilisateur connecté ---> $user = $this->getUser();
         $user = $this->getUser();
-
         $em = $this->getDoctrine()->getManager();
 
         if($user){
@@ -45,8 +44,7 @@ class DefaultController extends Controller
 
                 $projets = $query->getResult();
             }
-            dump($projets);
-            return $this->render('TimeProjectBundle:Default:index.html.twig', ['projets' => $projets]);
+            return $this->render('TimeProjectBundle:Default:index.html.twig', ['projets' => $projets, 'username' => $user->getUsername()]);
         } else {
             return $this->redirectToRoute('login');
         }
@@ -58,25 +56,34 @@ class DefaultController extends Controller
     }
 
     public function createUserAction(){
-        return $this->render('TimeProjectBundle:Default:createUser.html.twig');
+        $allUsers = $this->getDoctrine()
+                         ->getRepository('TimeProjectBundle:User')
+                         ->findAll();
+        $arrayUsers = [];
+        foreach ( $allUsers as $key => $user ){
+            foreach($user->getRoles() as $role){
+                $role = ($role == 'ROLE_ADMIN' ? 'ADMIN' : 'UTILISATEUR');
+            }
+            $userArray = [$user->getUsername(), $user->getEmail(), $role, $user->getId()];
+            $arrayUsers[] = $userArray;
+        }
+
+        return $this->render('TimeProjectBundle:Default:createUser.html.twig', ['users' => $arrayUsers]);
     }
 
     public function getAllUsersAction(){
         $allUsers = $this->getDoctrine()
                          ->getRepository('TimeProjectBundle:User')
                          ->findAll();
-        $arrayUsers = null;
+        $arrayUsers = [];
         foreach ( $allUsers as $key => $user ){
-            $arrayUsers['data'][$key]['DT_RowId'] = 'row_'.$user->getId();
-            $arrayUsers['data'][$key]['id'] = $user->getId();
-            $arrayUsers['data'][$key]['username'] = $user->getUsername();
-            $arrayUsers['data'][$key]['email'] = $user->getEmail();
             foreach($user->getRoles() as $role){
                 $role = ($role == 'ROLE_ADMIN' ? 'ADMIN' : 'UTILISATEUR');
             }
-
-            $arrayUsers['data'][$key]['role'] = $role;
+            $userArray = [$user->getUsername(), $user->getEmail(), $role, $user->getId()];
+            $arrayUsers[] = $userArray;
         }
+
         $response = new Response(json_encode($arrayUsers));
         $response->headers->set('Content-Type', 'application/json');
 
@@ -85,27 +92,27 @@ class DefaultController extends Controller
 
     public function manageUserAction(Request $request){
         $em = $this->getDoctrine()->getManager();
-        $data = null;
 
-        foreach($request->get('data') as $data){
-            $data = $data;
-        }
-        $role = ($data['role'] == 'ADMIN' ? 'ROLE_ADMIN' : 'ROLE_USER');
+        $data = $request->get('data');
         $action = $request->get('action');
         if ( $action == 'create' ){
+            $role = ($data[0]['role'] == 'ADMIN' ? 'ROLE_ADMIN' : 'ROLE_USER');
             $user = new User();
-            $user->setUsername($request->get('data')[0]['username']);
-            $user->setEmail($request->get('data')[0]['email']);
-            $user->setUsernameCanonical($request->get('data')[0]['username']);
-            $user->setEmailCanonical($request->get('data')[0]['email']);
+            $user->setUsername($data[0]['username']);
+            $user->setEmail($data[0]['email']);
+            $user->setUsernameCanonical($data[0]['username']);
+            $user->setEmailCanonical($data[0]['email']);
             $user->setRoles([$role]);
-            $token = random_bytes(10);
-            $user->setConfirmationToken($token);
-            // a revoir
-            $user->setPassword('azerty');
-            $user->setSalt('azertyuiokjhgdsdfghjkjhgfd');
-            $user->setEnabled(true);
+            $user->setConfirmationToken(md5(uniqid(rand(), true)));
 
+
+            // a revoir
+            $plainPassword = 'azerty';
+            $encoder = $this->get('security.password_encoder');
+            $encoded = $encoder->encodePassword($user, $plainPassword);
+            $user->setPassword($encoded);
+
+            $user->setEnabled(false);
             $em->persist($user);
 
             $url = $this->get('router')->generate('fos_user_registration_confirm', array('token' => $user->getConfirmationToken()), UrlGeneratorInterface::ABSOLUTE_URL);
@@ -119,7 +126,7 @@ class DefaultController extends Controller
                                              'TimeProjectBundle:Email:confirmEmail.html.twig',
                                              ['user' => $user->getUsername(),
                                               'email'=>$user->getEmail(),
-                                              'password' => $user->getPassword(),
+                                              'password' => $plainPassword,
                                               'url' => $url
                                              ]
                                          ),
@@ -139,36 +146,27 @@ class DefaultController extends Controller
             $this->get('mailer')->send($message);
 
         } else if ( $action == 'edit' ){
+            $role = ($data[0]['role'] == 'ADMIN' ? 'ROLE_ADMIN' : 'ROLE_USER');
             $user = $this->getDoctrine()
                 ->getRepository('TimeProjectBundle:User')
-                ->find($data['id']);
-            $user->setUsername($data['username']);
-            $user->setEmail($data['email']);
-            $user->setUsernameCanonical($data['username']);
-            $user->setEmailCanonical($data['email']);
+                ->find($data[0]['id']);
+            $user->setUsername($data[0]['username']);
+            $user->setEmail($data[0]['email']);
+            $user->setUsernameCanonical($data[0]['username']);
+            $user->setEmailCanonical($data[0]['email']);
             $user->setRoles([$role]);
             $em->persist($user);
 
         } else {
             $user = $this->getDoctrine()
                 ->getRepository('TimeProjectBundle:User')
-                ->find($data['id']);
+                ->find($data[0]['id']);
             $em->remove($user);
         }
 
         $em->flush();
 
-        foreach($user->getRoles() as $role){
-            $role = ($role == 'ROLE_ADMIN' ? 'ADMIN' : 'UTILISATEUR');
-        }
-
-        $data['data'][] = [
-            'DT_RowId' => 'row_'.$user->getId(),
-            'id' => $user->getId(),
-            'username' => $user->getUsername(),
-            'email' => $user->getEmail(),
-            'role' => $role,
-        ];
+        $data['res'] = 'success';
 
         $response = new Response(json_encode($data));
         $response->headers->set('Content-Type', 'application/json');
