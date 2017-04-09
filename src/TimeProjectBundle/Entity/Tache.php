@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Tache
  *
- * @ORM\Table(name="tache", indexes={@ORM\Index(name="fk_projet", columns={"fk_projet"})})
+ * @ORM\Table(name="tache", indexes={@ORM\Index(name="fk_projet", columns={"fk_projet"}), @ORM\Index(name="redacteur", columns={"redacteur"})})
  * @ORM\Entity
  */
 class Tache
@@ -58,6 +58,16 @@ class Tache
      * })
      */
     private $fkProjet;
+
+    /**
+     * @var \User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="redacteur", referencedColumnName="id")
+     * })
+     */
+    private $redacteur;
 
 
 
@@ -189,5 +199,29 @@ class Tache
     public function getFkProjet()
     {
         return $this->fkProjet;
+    }
+
+    /**
+     * Set redacteur
+     *
+     * @param \TimeProjectBundle\Entity\User $redacteur
+     *
+     * @return Tache
+     */
+    public function setRedacteur(\TimeProjectBundle\Entity\User $redacteur = null)
+    {
+        $this->redacteur = $redacteur;
+
+        return $this;
+    }
+
+    /**
+     * Get redacteur
+     *
+     * @return \TimeProjectBundle\Entity\User
+     */
+    public function getRedacteur()
+    {
+        return $this->redacteur;
     }
 }

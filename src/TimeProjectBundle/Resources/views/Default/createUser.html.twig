@@ -109,7 +109,7 @@
     <script src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.datatables.net/select/1.1.2/js/dataTables.select.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.0.2/js/dataTables.responsive.min.js"></script>
-
+    <script src="{{ asset('bundles/assets/js/lib/bootstrap-notify.js') }}"></script>
     <script type="text/javascript" language="javascript">
 
 
@@ -173,8 +173,6 @@
                         text: 'SUPPRIMER',
                         name: 'delete'      // do not change name
                     }]
-
-
             });
 
             $('.dt-button').on('click', function(){
@@ -228,6 +226,7 @@
                                 break;
                         }
 
+                        modalChoosen.modal('hide');
                         $.ajax({
                             url: "{{ path('manage_user') }}",
                             type: 'POST',
@@ -235,11 +234,34 @@
                                 "action" : action,
                                 "data" :   inputData
                             },
+                            dataType : 'html',
                             success: function (res) {
-                                location.reload();
+                                var msg = JSON.parse(res);
+                                console.log(msg.erreur);
+                                if (msg.success){
+                                    $.notify({
+                                        icon: "pe-7s-gift",
+                                        message: msg.success
+                                    },{
+                                        timer: 4000,
+                                        type: 'success'
+
+                                    });
+                                    location.reload();
+                                }else{
+
+                                    $.notify({
+                                        icon: "pe-7s-gift",
+                                        message: msg.erreur
+                                    },{
+                                        timer: 4000,
+                                        type: 'danger'
+
+                                    });
+                                }
                             },
                             error: function (resultat, statut, erreur) {
-                                console.log(erreur);
+                                alert(erreur);
                             }
                         });
 

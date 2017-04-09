@@ -20,8 +20,7 @@
         <div id="main">
             <div class="inner">
                 <header>
-                    <h1>Bienvenue {{ username }}</h1>
-                    <h2>Liste des projets</h2>
+                    <h1>Liste des projets</h1>
                 </header>
 
                 <section class="tiles">
@@ -38,15 +37,20 @@
                         </a>
                     </article>
                     {% for projet in projets %}
-
                         <article class="style{{random(5)}}">
 									<span class="image">
 										<img src="{{ asset('bundles/images/img01.jpg') }}" alt="" />
 									</span>
-                            <a id="projet{{ projet.id }}" href="{{ path('project_calendar', {'project_id' : projet.id}) }}" >
+                            <a id="projet{{ projet.id }}" href="{{ path('project_calendar', {'project_id' : projet.id }) }}" >
                                 <h2>{{ projet.nom }}</h2>
+                                <p>{{ projet.dateDebut|date('d/m/Y') }} au {{ projet.dateFin|date('d/m/Y') }}</p>
                                 <div class="content">
-                                    <p>{{ projet.dateDebut|date('d/m/Y') }} au {{ projet.dateFin|date('d/m/Y') }}</p>
+                                    <b><p style="color: red;">RENDU DU JOUR : {{ taches[projet.id]|length }}</p></b>
+                                    {% if taches[projet.id]|length > 0 %}
+                                            {% for tache in taches[projet.id] %}
+                                                <p style="color: red;">{{ tache.dateFin|date('d/m/Y') }} -> {{ tache.nom }}</p>
+                                            {% endfor %}
+                                    {% endif %}
                                 </div>
                             </a>
                         </article>

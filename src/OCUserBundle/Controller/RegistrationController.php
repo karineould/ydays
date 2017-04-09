@@ -166,6 +166,11 @@ class RegistrationController extends Controller
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
+        $em = $this->getDoctrine()->getManager();
+        $user->setLastLogin(null);
+        $em->persist($user);
+        $em->flush();
+        
         return $this->render('TimeProjectBundle:Default:confirmed.html.twig', array(
             'user' => $user,
         ));
