@@ -10,6 +10,7 @@ use OCUserBundle\Entity\User;
 use TimeProjectBundle\Entity\Projet;
 use TimeProjectBundle\Entity\Tache;
 use TimeProjectBundle\Entity\TacheParUser;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 
 class DefaultController extends Controller
@@ -20,9 +21,9 @@ class DefaultController extends Controller
         // récupération de l'utilisateur connecté ---> $user = $this->getUser();
         $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
-
+        $projets = [];
         if($user){
-            if (empty($user->getLastLogin())){
+            if ($user->getLastLogin() == null){
                 return $this->redirectToRoute('/profile/change-password');
             }
             if($this->isGranted('ROLE_ADMIN')){
@@ -40,11 +41,33 @@ class DefaultController extends Controller
                             ->andWhere('t.id = tu.fkTache')
                             ->andWhere('t.fkProjet = p.id')
                             ->groupBy('p.id')
+                            ->orderBy('p.dateFin', 'ASC')
                             ->getQuery();
 
                 $projets = $query->getResult();
             }
-            return $this->render('TimeProjectBundle:Default:index.html.twig', ['projets' => $projets, 'username' => $user->getUsername()]);
+
+            //Sort projet by date end
+            usort($projets, function( $a, $b ) {
+                return ($a->getDateFin()) > ($b->getDateFin());
+            });
+
+            $taches =[];
+            foreach ($projets as $projet){
+                $query = $em->createQueryBuilder('t')
+                            ->select('t')
+                            ->from('TimeProjectBundle:Tache','t')
+                            ->where('t.fkProjet = :projetId')
+                            ->setParameter('projetId', $projet->getId())
+                            ->andWhere('t.dateFin = :now')
+                            ->setParameter('now', (new \DateTime())->format('Y-m-d'))
+                            ->orderBy('t.priorite', 'DESC')
+                            ->getQuery();
+
+                $tacheUrgente = $query->getResult();
+                $taches[$projet->getId()] = $tacheUrgente;
+            }
+            return $this->render('TimeProjectBundle:Default:index.html.twig', ['projets' => $projets, 'user' => $user, 'taches' => $taches]);
         } else {
             return $this->redirectToRoute('login');
         }
@@ -56,6 +79,7 @@ class DefaultController extends Controller
     }
 
     public function createUserAction(){
+        $currentUser = $this->getUser();
         $allUsers = $this->getDoctrine()
                          ->getRepository('TimeProjectBundle:User')
                          ->findAll();
@@ -68,7 +92,7 @@ class DefaultController extends Controller
             $arrayUsers[] = $userArray;
         }
 
-        return $this->render('TimeProjectBundle:Default:createUser.html.twig', ['users' => $arrayUsers]);
+        return $this->render('TimeProjectBundle:Default:createUser.html.twig', ['users' => $arrayUsers, 'user' => $currentUser]);
     }
 
     public function getAllUsersAction(){
@@ -92,89 +116,123 @@ class DefaultController extends Controller
 
     public function manageUserAction(Request $request){
         $em = $this->getDoctrine()->getManager();
-
         $data = $request->get('data');
         $action = $request->get('action');
+        $output = [];
+
         if ( $action == 'create' ){
-            $role = ($data[0]['role'] == 'ADMIN' ? 'ROLE_ADMIN' : 'ROLE_USER');
-            $user = new User();
-            $user->setUsername($data[0]['username']);
-            $user->setEmail($data[0]['email']);
-            $user->setUsernameCanonical($data[0]['username']);
-            $user->setEmailCanonical($data[0]['email']);
-            $user->setRoles([$role]);
-            $user->setConfirmationToken(md5(uniqid(rand(), true)));
+            //Create the user
+            try {
+                $role[] = ($data[0]['role'] == 'ADMIN' ? 'ROLE_ADMIN' : 'ROLE_USER');
+                $user = new User();
+                $user->setUsername($data[0]['username']);
+                $user->setEmail($data[0]['email']);
+                $user->setUsernameCanonical($data[0]['username']);
+                $user->setEmailCanonical($data[0]['email']);
+                $user->setConfirmationToken(md5(uniqid(rand(), true)));
 
+                // Initialize the password
+                $plainPassword = 'azerty';
+                $encoder       = $this->get('security.password_encoder');
+                $encoded       = $encoder->encodePassword($user, $plainPassword);
+                $user->setPassword($encoded);
+                $user->setEnabled(false);
+                $user->setRoles($role);
 
-            // a revoir
-            $plainPassword = 'azerty';
-            $encoder = $this->get('security.password_encoder');
-            $encoded = $encoder->encodePassword($user, $plainPassword);
-            $user->setPassword($encoded);
+                $em->persist($user);
+                $em->flush();
 
-            $user->setEnabled(false);
-            $em->persist($user);
+                //Send confirmation email
+                $url = $this->get('router')->generate('fos_user_registration_confirm', array('token' => $user->getConfirmationToken()), UrlGeneratorInterface::ABSOLUTE_URL);
+                $message = \Swift_Message::newInstance()
+                                         ->setSubject('Bienvenue '.$user->getUsername())
+                                         ->setFrom('contact.timeproject@gmail.com')
+                                         ->setTo($user->getEmail())
+                                         ->setBody(
+                                             $this->renderView(
+                                                 'TimeProjectBundle:Email:confirmEmail.html.twig',
+                                                 ['user' => $user->getUsername(),
+                                                  'email'=>$user->getEmail(),
+                                                  'password' => $plainPassword,
+                                                  'url' => $url
+                                                 ]
+                                             ),
+                                             'text/html'
+                                         );
+                $this->get('mailer')->send($message);
 
-            $url = $this->get('router')->generate('fos_user_registration_confirm', array('token' => $user->getConfirmationToken()), UrlGeneratorInterface::ABSOLUTE_URL);
+                $output['success'] =  "L'utilisateur a été créé";
+            }catch (Exception $e) {
+                $output["error"] = "L'utilisateur n'a pas été créé";
 
-            $message = \Swift_Message::newInstance()
-                                     ->setSubject('Bienvenu '.$user->getUsername())
-                                     ->setFrom('contact.timeproject@gmail.com')
-                                     ->setTo($user->getEmail())
-                                     ->setBody(
-                                         $this->renderView(
-                                             'TimeProjectBundle:Email:confirmEmail.html.twig',
-                                             ['user' => $user->getUsername(),
-                                              'email'=>$user->getEmail(),
-                                              'password' => $plainPassword,
-                                              'url' => $url
-                                             ]
-                                         ),
-                                         'text/html'
-                                     )
-                /*
-                 * If you also want to include a plaintext version of the message
-                ->addPart(
-                    $this->renderView(
-                        'Emails/registration.txt.twig',
-                        array('name' => $name)
-                    ),
-                    'text/plain'
-                )
-                */
-            ;
-            $this->get('mailer')->send($message);
-
+                $response = new Response(json_encode($output));
+                $response->headers->set('Content-Type', 'application/json');
+                return $response;
+            }
         } else if ( $action == 'edit' ){
-            $role = ($data[0]['role'] == 'ADMIN' ? 'ROLE_ADMIN' : 'ROLE_USER');
-            $user = $this->getDoctrine()
-                ->getRepository('TimeProjectBundle:User')
-                ->find($data[0]['id']);
-            $user->setUsername($data[0]['username']);
-            $user->setEmail($data[0]['email']);
-            $user->setUsernameCanonical($data[0]['username']);
-            $user->setEmailCanonical($data[0]['email']);
-            $user->setRoles([$role]);
-            $em->persist($user);
+            //Update the user data
+            try {
+                $role = ($data[0]['role'] == 'ADMIN' ? 'ROLE_ADMIN' : 'ROLE_USER');
+                $user = $this->getDoctrine()
+                             ->getRepository('TimeProjectBundle:User')
+                             ->find($data[0]['id']);
+                $user->setUsername($data[0]['username']);
+                $user->setEmail($data[0]['email']);
+                $user->setUsernameCanonical($data[0]['username']);
+                $user->setEmailCanonical($data[0]['email']);
+                $user->setRoles([$role]);
 
+                $em->persist($user);
+                $em->flush();
+
+                $output['success'] =  "L'utilisateur a été modifié";
+            }catch (Exception $e) {
+                $output["erreur"] = "L'utilisateur n'a pas été modifié";
+                $response = new Response(json_encode($output));
+                $response->headers->set('Content-Type', 'application/json');
+                return $response;
+            }
         } else {
-            $user = $this->getDoctrine()
-                ->getRepository('TimeProjectBundle:User')
-                ->find($data[0]['id']);
-            $em->remove($user);
+            //Check if the user is related to a task
+            $userTasks = $this->getDoctrine()
+                             ->getRepository('TimeProjectBundle:TacheParUser')
+                             ->findBy(['fkUser' => $data[0]['id']]);
+
+            //if  not delete the user
+            if (!$userTasks){
+                try{
+                    $user = $this->getDoctrine()
+                                ->getRepository('TimeProjectBundle:User')
+                                ->find($data[0]['id']);
+                    $em->remove($user);
+                    $em->flush();
+
+                    $output['success'] =  "L'utilisateur a été supprimé";
+                }catch (Exception $e) {
+                    $output["erreur"] = "L'utilisateur n'a pas été supprimé";
+
+                    $response = new Response(json_encode($output));
+                    $response->headers->set('Content-Type', 'application/json');
+                    return $response;
+                }
+
+            }else{
+                $output["erreur"] = "L'utilisateur est relié a une tache !";
+
+                $response = new Response(json_encode($output));
+                $response->headers->set('Content-Type', 'application/json');
+                return $response;
+            }
+
         }
 
-        $em->flush();
-
-        $data['res'] = 'success';
-
-        $response = new Response(json_encode($data));
+        $response = new Response(json_encode($output));
         $response->headers->set('Content-Type', 'application/json');
-
         return $response;
     }
 
     public function getProjectCalendarAction($project_id){
+        $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
         $projet = $this->getDoctrine()
             ->getRepository('TimeProjectBundle:Projet')
@@ -205,7 +263,7 @@ class DefaultController extends Controller
                                 ->findAll();
             }
             return $this->render('TimeProjectBundle:Default:project-calendar.html.twig',
-                ['projet'=>$projet, 'allUsers'=>$allUsers]);
+                ['projet'=>$projet, 'allUsers'=>$allUsers, 'user' => $user]);
         } else {
             return $this->redirectToRoute('page_introuvable');
         }
@@ -233,6 +291,10 @@ class DefaultController extends Controller
     }
 
     public function createTacheAction(Request $request){
+        $user = $this->getUser();
+        $fkUser = $this->getDoctrine()
+                       ->getRepository('TimeProjectBundle:User')
+                       ->find($user->getId());
         $em = $this->getDoctrine()->getManager();
         $nomTache = $request->get('nom');
         $dateDebut = new \DateTime($request->get('dateDebut'));
@@ -252,6 +314,7 @@ class DefaultController extends Controller
             $tache->setDateFin($dateFin);
             $tache->setPriorite($priorite);
             $tache->setFkProjet($projet);
+            $tache->setRedacteur($fkUser);
             $em->persist($tache);
             foreach($usersToTache as $userByTache){
                 $fkUser = $this->getDoctrine()
@@ -273,6 +336,10 @@ class DefaultController extends Controller
     }
 
     public function editTacheAction(Request $request){
+        $user = $this->getUser();
+        $fkUser = $this->getDoctrine()
+                       ->getRepository('TimeProjectBundle:User')
+                       ->find($user->getId());
         $em = $this->getDoctrine()->getManager();
         $nomTache = $request->get('nom');
         $dateDebut = new \DateTime($request->get('dateDebut'));
@@ -290,6 +357,7 @@ class DefaultController extends Controller
             $tache->setDateDebut($dateDebut);
             $tache->setDateFin($dateFin);
             $tache->setPriorite($priorite);
+            $tache->setRedacteur($fkUser);
             $em->persist($tache);
 
             // supprimer les taches associées aux utilisateurs avant d'ajouter les nouvelles modifiées !!!
@@ -353,13 +421,18 @@ class DefaultController extends Controller
         }
 
         foreach( $taches as $key => $tache ){
+            $redacteur = $this->getDoctrine()
+                             ->getRepository('TimeProjectBundle:User')
+                             ->find($tache->getRedacteur());
+            
             $array[$key]['id'] = $tache->getId();
             $array[$key]['allDay'] = 'false';
-            $array[$key]['title'] = $tache->getNom();
+            $array[$key]['title'] = $redacteur->getUsername().' : '.$tache->getNom();
             $array[$key]['start'] = $tache->getDateDebut()->format('Y-m-d');
             $array[$key]['end'] = $tache->getDateFin()->format('Y-m-d');
             $array[$key]['priorite'] = $tache->getPriorite();
-            $array[$key]['dateDebut'] =$tache->getDateDebut()->format('d/m/Y');
+            $array[$key]['redacteur'] = $redacteur->getUsername();
+            $array[$key]['dateDebut'] = $tache->getDateDebut()->format('d/m/Y');
             $array[$key]['dateFin'] = $tache->getDateFin()->format('d/m/Y');
             $allTacheParUser = $this->getDoctrine()
                 ->getRepository('TimeProjectBundle:TacheParUser')
@@ -373,5 +446,16 @@ class DefaultController extends Controller
         $response = new Response(json_encode($array));
         $response->headers->set('Content-Type', 'application/json');
         return $response;
+    }
+
+
+    public function listPlanAction($project_id){
+//        $em = $this->getDoctrine()->getManager();
+        $projet = $this->getDoctrine()
+                       ->getRepository('TimeProjectBundle:Projet')
+                       ->find($project_id);
+        if($projet) {
+            return $this->render('TimeProjectBundle:Default:listPlan.html.twig',['projet' => $projet] );
+        }
     }
 }

@@ -7,8 +7,8 @@
     {{ parent() }}
     <link rel="stylesheet" type="text/css" href="{{ asset('bundles/assets/css/fullcalendar/fullcalendar.css') }}"/>
     <link rel="stylesheet" href="{{ asset('bundles/assets/css/lib/datepicker.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('bundles/assets/css/lib/animate.min.css') }}" />{% endblock %}
-
+    <link rel="stylesheet" href="{{ asset('bundles/assets/css/lib/animate.min.css') }}" />
+{% endblock %}
 
 {% block body %}
 
@@ -20,12 +20,8 @@
     <div class="content">
         <div class="container-fluid">
             <div class="inner">
-                <header>
-                    <h1>{{ projet.nom|upper }}</h1>
-                </header>
-                <br/>
                 {% if is_granted('ROLE_ADMIN') == true %}
-                    <button id="createTache" data-toggle="modal" data-target="#createTacheModal">Ajouter une tâche</button>
+                    <button id="createTache" data-toggle="modal" data-target="#createTacheModal">Ajouter un évènement</button>
                     <br/>
                 {% endif %}
                 <br/>
@@ -38,12 +34,12 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Création d'une nouvelle tâche</h5>
+                    <h5 class="modal-title">Création d'un nouvel évènement</h5>
                 </div>
                 <div class="modal-body">
                     <div id="input-group">
                         <div class="form-group" id="div-nomTache">
-                            Nom de la tâche  <input type="text" id="nomTache" class="form-control"
+                            Nom de l'évènement  <input type="text" id="nomTache" class="form-control"
                                                     placeholder="Entrez le nom"><br>
                         </div>
                         <div class="form-group" id="div-debutTache">
@@ -52,7 +48,7 @@
                         </div>
                         <div class="form-group" id="div-finTache">
                             Date de fin  <input type="text" class="datepicker form-control" id="finTache"
-                                                placeholder="Sélectionnez une date"//><br>
+                                                placeholder="Sélectionnez une date"><br>
                         </div>
                         <div class="form-group" id="div-finTache">
                             Priorité
@@ -64,7 +60,7 @@
                         </div>
                         {% if is_granted('ROLE_ADMIN') == true %}
                             <div class="form-group" id="div-usersTache">
-                                Personnes affectées à la tâche
+                                Personnes affectées à l'évènement
                                 &nbsp;      <a id="addUserToTache"><i class="fa fa-2x fa-plus-square-o"></i></a>
                                 <br/>
                                 <table>
@@ -87,7 +83,7 @@
                                             </td>
                                             <td>
                                                 <input type="number" min="1" class="form-control dureeTache"
-                                                       placeholder="Durée de la tâche en heures"
+                                                       placeholder="Durée de travail estimé en heures"
                                                        onkeyup="this.value=this.value.replace(/[^\d]/,'')"/>
                                             </td>
                                             <td class="deleteCell"></td>
@@ -164,9 +160,11 @@
                 eventClick: function(calEvent, jsEvent, view) {
                     debut = new Date(calEvent.start);
                     fin = new Date(calEvent.end);
+                    title = calEvent.title.split(": ");
                     $('#createTacheModal').modal('toggle');
-                    $('#createTacheModal .modal-title').html('Modification de la tache');
-                    nomTache = $('#nomTache').val(calEvent.title);
+                    $("#createTacheModal td").css('padding','5px');
+                    $('#createTacheModal .modal-title').html('Modification de l\'évènement');
+                    nomTache = $('#nomTache').val(title[1]);
                     dateDebut = $('#debutTache').val(calEvent.dateDebut);
                     dateFin = $('#finTache').val(calEvent.dateFin);
                     priorite = $('#prioriteTache').val(calEvent.priorite);
@@ -195,12 +193,12 @@
 //                           startDate: '-3d',
                             zIndex: 9999
                         });
-                        $('#createTacheModal .modal-title').html('Modification de la tache');
+                        $('#createTacheModal .modal-title').html('Modification de l\'évènement');
                         $('#createTacheModal #input-group input').attr('readonly', false);
                         $('#submitEditTache').show();
                         $('#prioriteTache').attr('disabled', false);
                     } else {
-                        $('#createTacheModal .modal-title').html('Détails de la tache');
+                        $('#createTacheModal .modal-title').html('Détails de l\'évènement');
                         $('.datepicker').datepicker("destroy");
                         $('#createTacheModal #input-group input').attr('readonly', true);
                         $('#submitEditTache').hide();
@@ -211,7 +209,8 @@
             });
 
             $('#createTache').on('click', function(){
-                $('#createTacheModal .modal-title').html("Création d'une nouvelle tâche");
+                $('#createTacheModal .modal-title').html("Création d'un nouvel évènement");
+                $("#createTacheModal td").css('padding','5px');
                 nomTache = $('#nomTache').val('');
                 dateDebut = $('#debutTache').val('');
                 dateFin = $('#finTache').val('');

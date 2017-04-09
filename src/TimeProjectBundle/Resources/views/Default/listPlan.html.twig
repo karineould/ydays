@@ -1,0 +1,16 @@
+{% extends 'TimeProjectBundle::layout_dashboard.html.twig' %}
+
+{% block title %}{{ parent() }} - Projet {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/assets/css/fullcalendar/fullcalendar.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('bundles/assets/css/lib/datepicker.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/assets/css/lib/animate.min.css') }}" />{% endblock %}
+
+
+{% block body %}
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}

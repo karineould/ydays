@@ -32,6 +32,12 @@ edit_tache:
     path: /edit_tache
     defaults: { _controller: TimeProjectBundle:Default:editTache }
 
+list_plan:
+    path: /list_plan/projet-{project_id}
+    defaults: { _controller: TimeProjectBundle:Default:listPlan }
+    requirements:
+        project_id: '\d+'
+
 page_introuvable:
     path: error-404
     defaults: { _controller: TimeProjectBundle:Default:pageIntrouvable }

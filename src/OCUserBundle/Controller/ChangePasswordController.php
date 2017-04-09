@@ -84,9 +84,9 @@ class ChangePasswordController extends Controller
             return $response;
         }
 
-        dump($form->createView());
         return $this->render('@TimeProject/Default/change_password.html.twig', array(
             'form' => $form->createView(),
+            'user' => $user
         ));
     }
 }
