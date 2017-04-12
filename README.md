@@ -14,8 +14,8 @@ Nous ne fournissons pas ce fichier car il contient des informations sensibles te
 Le fichier doit contenir les informations suivantes 
 *********************************************************
 `parameters:
-    database_host: $host ou $ip
-    database_port: $port
+    database_host: $host_ou_$ip
+    database_port: $port
     database_name: $nom_de_la_base
     database_user: $user_mysql
     database_password: $password_mysql
