@@ -37,15 +37,21 @@ Attention: il faut autoriser l'adresse email a envoyer des mails depuis une conn
 php bin/console doctrine:mapping:convert annotation ./src/TimeProjectBundle/Resources/config/doctrine/metadata/orm --from-database --force
 ```
 # Import the structure
+```shell
 php bin/console doctrine:mapping:import TimeProjectBundle annotation
+```
 
 # Generate Entities file class
+```shell
 php bin/console doctrine:generate:entities TimeProjectBundle 
+```
 
 # mettre à jour la base de données selon les entités existants
+```shell
 php bin/console doctrine:schema:update --force --complete
+```
 
 # vider le cache
+```shell
 php bin/console cache:clear
-
-php bin/console doctrine:schema:validate
+```
