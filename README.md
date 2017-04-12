@@ -13,7 +13,7 @@ Créer un fichier parameter.yml dans /app/config/
 Nous ne fournissons pas ce fichier car il contient des informations sensibles telles que des mots de passe
 Le fichier doit contenir les informations suivantes 
 *********************************************************
-`parameters:
+```parameters:
     database_host: $host_ou_$ip
     database_port: $port
     database_name: $nom_de_la_base
