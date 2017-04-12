@@ -13,7 +13,7 @@ Créer un fichier parameter.yml dans /app/config/
 Nous ne fournissons pas ce fichier car il contient des informations sensibles telles que des mots de passe
 Le fichier doit contenir les informations suivantes 
 *********************************************************
-parameters:
+`parameters:
     database_host: $host ou $ip
     database_port: $port
     database_name: $nom_de_la_base
@@ -26,7 +26,7 @@ parameters:
     mailer_auth_mode : login
     mailer_port : 465
     mailer_user : $email_company
-    mailer_password : $password_email 
+    mailer_password : $password_email` 
 *********************************************************
 Attention: il faut autoriser l'adresse email a envoyer des mails depuis une connexion distante.
 
