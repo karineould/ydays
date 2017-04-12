@@ -33,8 +33,9 @@ parameters:
 Attention: il faut autoriser l'adresse email a envoyer des mails depuis une connexion distante.
 
 # mapping avec la base de données et création des fichers xml 
+```shell
 php bin/console doctrine:mapping:convert annotation ./src/TimeProjectBundle/Resources/config/doctrine/metadata/orm --from-database --force
-
+```
 # Import the structure
 php bin/console doctrine:mapping:import TimeProjectBundle annotation
 
