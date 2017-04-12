@@ -6,7 +6,7 @@ A Symfony project created on January 4, 2017, 3:32 pm.
 # Installation du projet
 Commandes à exécuter sur le shell :
 1) git clone https://github.com/karineould/ydays
-2) composer install (Péalablement avoir Composer : https://getcomposer.org/)
+2) composer install (Péalablement avoir [Composer](https://getcomposer.org/))
 
 # Configuration local 
 Créer un fichier parameter.yml dans /app/config/
