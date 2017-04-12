@@ -3,9 +3,9 @@ project
 
 A Symfony project created on January 4, 2017, 3:32 pm.
 
-Config Apache : MAMP ou WAMP
+# Config Apache : MAMP ou WAMP
 
-1) chercher le fichier httpd_vhosts.conf qui se surement dans le répertoire conf/extra et rajouter ceci :
+1) chercher le fichier httpd_vhosts.conf qui se trouve dans le répertoire conf/extra et rajouter ceci :
 
 <VirtualHost *:8888>
     DocumentRoot "/Applications/MAMP/htdocs"
@@ -24,27 +24,21 @@ Config Apache : MAMP ou WAMP
 
 décommenter la ligne : Include /Applications/MAMP/conf/apache/extra/httpd-vhosts.conf
 
-
-
 Commandes à exécuter sur le shell :
 1) git clone https://github.com/karineould/ydays
-2) composer install
-
-
+2) composer install (Péalablement avoir Composer !!)
 
 
 # mapping avec la base de données et création des fichers xml 
-# Import the structure
-# Generate Entities file class
-
 php bin/console doctrine:mapping:convert annotation ./src/TimeProjectBundle/Resources/config/doctrine/metadata/orm --from-database --force
 
+# Import the structure
 php bin/console doctrine:mapping:import TimeProjectBundle annotation
 
+# Generate Entities file class
 php bin/console doctrine:generate:entities TimeProjectBundle 
 
-
-# genera un user
+# generation d'un user
 php bin/console fos:user:create
 
 # mettre à jour la base de données selon les entités existants
